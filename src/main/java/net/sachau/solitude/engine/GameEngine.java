@@ -247,11 +247,8 @@ public class GameEngine implements Observer {
         } else if (player.getLeft() != null && player.getLeft() instanceof Weapon) {
             weapon =(Weapon) player.getLeft();
         } else {
-            weapon = new Weapon("Fist", 1, 1, 0, false) {
-                @Override
-                public void apply(GameEngine gameEngine, Object... args) {
+            weapon = new Weapon("Fist", 1, 1, false) {
 
-                }
             };
         }
         Distance distance = getMissionMap().calculateDistance(player.getY(), player.getX(), enemy.getY(), enemy.getX());

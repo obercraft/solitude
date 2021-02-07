@@ -31,7 +31,7 @@ public class SolitudeApplication extends Application {
         Player player = new Player();
         player.setHits(5);
         player.setAmmo(2);
-        player.setRight(new Weapon("Pistol", 2,1, 1, true));
+        // player.setRight(new Weapon("Pistol", 2,1, 1, true));
         Mission mission1 = new Mission1();
         mission1.generateMap(gameEngine);
         mission1.getActionCards().shuffle();
