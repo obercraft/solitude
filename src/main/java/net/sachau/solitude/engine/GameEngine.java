@@ -1,6 +1,7 @@
 package net.sachau.solitude.engine;
 
 import net.sachau.solitude.Logger;
+import net.sachau.solitude.items.Armor;
 import net.sachau.solitude.items.Weapon;
 import net.sachau.solitude.model.*;
 
@@ -186,7 +187,12 @@ public class GameEngine implements Observer {
         int attackSkill = 1 + enemy.getAttack();
         int result = getMission().drawResult(attackSkill);
         if (result > 0) {
-            player.setHits(Math.max(0, player.getHits() - enemy.getDamage()));
+            int damage = enemy.getDamage();
+            Armor armor = player.getArmor();
+            if (armor != null) {
+                
+            }
+            player.setHits(Math.max(0, player.getHits() - damage));
             sendError("enemy hits for " + enemy.getDamage());
         } else {
             sendError("enemy misses");
@@ -272,7 +278,7 @@ public class GameEngine implements Observer {
         for (int i = 0; i < skill; i++) {
             ActionCard actionCard = getMission().getActionCards().draw();
             result += actionCard.getSuccesses();
-            ammo += actionCard.getAmmo();
+            // ammo += actionCard.getAmmo();
         }
 
         if (distance.getRooms() > 1) {

@@ -1,5 +1,6 @@
 package net.sachau.solitude.items;
 
+import net.sachau.solitude.Messages;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.model.Player;
 import net.sachau.solitude.text.Symbol;
@@ -7,7 +8,7 @@ import net.sachau.solitude.text.Symbol;
 public class FirstAidKit extends Item {
 
     public FirstAidKit() {
-        super("First Aid Kit", Symbol.FA_FIRST_AID);
+        super(Messages.get("item.first-aid-kit"), Symbol.FA_FIRST_AID);
     }
 
     @Override

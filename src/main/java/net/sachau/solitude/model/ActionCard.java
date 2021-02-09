@@ -6,23 +6,18 @@ import java.util.List;
 public class ActionCard extends Card {
 
     private int successes;
-    private int ammo;
-    private int jam;
+    private boolean jam;
+    private boolean momentum;
     private List<Integer> randomNumber = new ArrayList<>();
 
     public ActionCard(int successes) {
         this.successes = successes;
     }
 
-    public ActionCard(int successes, int ammo) {
+    public ActionCard(int successes, boolean jam, boolean momentum) {
         this.successes = successes;
-        this.ammo = ammo;
-    }
-
-    public ActionCard(int successes, int ammo, int jam) {
-        this.successes = successes;
-        this.ammo = ammo;
         this.jam = jam;
+        this.momentum = momentum;
     }
 
     public int getSuccesses() {
@@ -33,22 +28,6 @@ public class ActionCard extends Card {
         this.successes = successes;
     }
 
-    public int getAmmo() {
-        return ammo;
-    }
-
-    public void setAmmo(int ammo) {
-        this.ammo = ammo;
-    }
-
-    public int getJam() {
-        return jam;
-    }
-
-    public void setJam(int jam) {
-        this.jam = jam;
-    }
-
     public List<Integer> getRandomNumber() {
         return randomNumber;
     }
@@ -57,12 +36,28 @@ public class ActionCard extends Card {
         this.randomNumber = randomNumber;
     }
 
+    public boolean isJam() {
+        return jam;
+    }
+
+    public void setJam(boolean jam) {
+        this.jam = jam;
+    }
+
+    public boolean isMomentum() {
+        return momentum;
+    }
+
+    public void setMomentum(boolean momentum) {
+        this.momentum = momentum;
+    }
+
     @Override
     public String toString() {
         return "ActionCard{" +
                 "successes=" + successes +
-                ", ammo=" + ammo +
                 ", jam=" + jam +
+                ", momentum=" + momentum +
                 ", randomNumber=" + randomNumber +
                 '}';
     }

@@ -43,65 +43,70 @@ public class MissionMapView extends AnchorPane implements Observer {
         for (int h = 0; h < height; h++) {
             double offsetLeft = 0;
             double offsetTopIncrease = 0;
-            boolean first = true;
             for (int w = 0; w < width; w++) {
 
-                Space space = gameEngine.getMissionMap().getSpace(h,w);
+                Space space = gameEngine.getMissionMap()
+                        .getSpace(h, w);
 
                 if (space != null) {
                     locations[h][w] = new SpaceNode(gameEngine, space);
                     getChildren().add(locations[h][w]);
-
-                    if (w == 0 && h==0) {
-                        playerLocation = locations[h][w];
-                    }
-
-                    if (space instanceof Room) {
-                        locations[h][w].relocate(offsetLeft, offsetTop);
-                    } else if (space instanceof Door) {
-                        Door door = (Door) space;
-                        if (!door.isVertical()) {
-                            locations[h][w].relocate(offsetLeft, offsetTop + 33);
-                        } else {
-                            if (first) {
-                                offsetLeft += 33;
-                                first = false;
-                            }
-                            locations[h][w].relocate(offsetLeft, offsetTop );
-                            // offsetLeft +=33;
-                        }
-                    }
+                    locations[h][w].relocate(offsetLeft, offsetTop);
                     offsetLeft += locations[h][w].getMaxWidth();
                     if (!space.isBlank()) {
                         offsetTopIncrease = Math.max(offsetTopIncrease, locations[h][w].getMaxHeight());
                     }
                 }
-
             }
+
             offsetTop += offsetTopIncrease;
         }
 
-        for (Map.Entry<Long, Enemy> enemy : gameEngine.getMission()
-                .getEnemies()
-                .entrySet()) {
+
+        playerLocation = locations[gameEngine.getMission().startingPosition().
+
+                getY()][gameEngine.getMission()
+                .
+
+                        startingPosition()
+                .
+
+                        getX()];
+
+        for (
+                Map.Entry<Long, Enemy> enemy : gameEngine.getMission()
+                .
+
+                        getEnemies()
+                .
+
+                        entrySet()) {
             EnemyNode enemyNode = new EnemyNode(enemy.getValue());
-            locations[enemy.getValue().getY()][enemy.getValue().getX()].addContent(enemyNode);
+            locations[enemy.getValue()
+                    .getY()][enemy.getValue()
+                    .getX()].addContent(enemyNode);
             enemyViews.put(enemy.getKey(), enemyNode);
             enemyNode.update(enemy.getValue());
 
         }
 
         updateEnemies();
+
         relocatePlayer(gameEngine.getPlayer());
+
         revealRooms();
 
 
     }
 
     private void updateEnemies() {
-        int y= gameEngine.getPlayer().getY();
-        int x = gameEngine.getPlayer().getX();
-        for (Enemy enemy : gameEngine.getMission().getEnemies().values()) {
+        int y = gameEngine.getPlayer()
+                .getY();
+        int x = gameEngine.getPlayer()
+                .getX();
+        for (Enemy enemy : gameEngine.getMission()
+                .getEnemies()
+                .values()) {
             if (enemy.getX() == x && enemy.getY() == y) {
                 enemy.setRevealed(true);
             }
@@ -110,7 +115,8 @@ public class MissionMapView extends AnchorPane implements Observer {
                 locations[enemy.getLastY()][enemy.getLastX()].removeContent(ev);
                 locations[enemy.getY()][enemy.getX()].addContent(ev);
             }
-            enemyViews.get(enemy.getId()).update(enemy);
+            enemyViews.get(enemy.getId())
+                    .update(enemy);
         }
         //
 //        for (EnemyView ev : enemyViews.values()) {
@@ -126,8 +132,7 @@ public class MissionMapView extends AnchorPane implements Observer {
     }
 
 
-
-//
+    //
 //    public HBox createRoom(int y, int x) {
 //        HBox roomPane = new HBox();
 //
@@ -235,20 +240,24 @@ public class MissionMapView extends AnchorPane implements Observer {
     }
 
     private void revealRoom(int y, int x) {
-        Space space = gameEngine.getMissionMap().getSpace(y ,x);
+        Space space = gameEngine.getMissionMap()
+                .getSpace(y, x);
         if (space != null) {
             space.setDiscovered(true);
             locations[y][x].update(space);
         }
     }
+
     private void revealRooms() {
-        int y= gameEngine.getPlayer().getY();
-        int x = gameEngine.getPlayer().getX();
+        int y = gameEngine.getPlayer()
+                .getY();
+        int x = gameEngine.getPlayer()
+                .getX();
 
 
-        for (int h = -1; h<=1; h ++) {
-            for (int w = -1; w <=1; w ++) {
-                if (Math.abs(h) == 1 && Math.abs(w) ==1) {
+        for (int h = -1; h <= 1; h++) {
+            for (int w = -1; w <= 1; w++) {
+                if (Math.abs(h) == 1 && Math.abs(w) == 1) {
                     // ignore diagonal
                 } else {
                     revealRoom(y + h, x + w);
@@ -265,14 +274,13 @@ public class MissionMapView extends AnchorPane implements Observer {
     }
 
     public static double roomY(int y) {
-        return  y * roomHeight;
+        return y * roomHeight;
     }
-
 
 
     class RoomView extends FlowPane {
 
-        private int x,y;
+        private int x, y;
 
         public int getX() {
             return x;

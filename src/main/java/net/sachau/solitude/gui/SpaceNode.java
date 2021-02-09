@@ -11,10 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
 import net.sachau.solitude.ComponentManager;
 import net.sachau.solitude.engine.GameEngine;
-import net.sachau.solitude.model.Door;
-import net.sachau.solitude.model.Room;
-import net.sachau.solitude.model.Asset;
-import net.sachau.solitude.model.Space;
+import net.sachau.solitude.model.*;
 import net.sachau.solitude.text.TextNode;
 import net.sachau.solitude.text.Symbol;
 
@@ -35,15 +32,20 @@ public class SpaceNode extends VBox {
         super();
         this.gameEngine = gameEngine;
         this.space = space;
-        int size = MissionMapView.corridorSize;
-        if (space instanceof Room) {
-            size = MissionMapView.roomHeight;
-        } else if (space instanceof Door) {
-            size = MissionMapView.corridorSize;
+        int height = MissionMapView.roomHeight;
+        int width = MissionMapView.roomWidth;
+        if (space instanceof Door) {
+            Door d = (Door) space;
+            if (!d.isVertical()) {
+                width = MissionMapView.corridorSize;
+            } else {
+                height = MissionMapView.corridorSize;
+            }
+
         }
 
-        this.setMinSize(size, size);
-        this.setMaxSize(size,size);
+        this.setMinSize(width, height);
+        this.setMaxSize(width,height);
         if (!space.isBlank()) {
             this.setBorder(new Border(new BorderStroke(Color.BLACK,
                     BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
@@ -73,11 +75,10 @@ public class SpaceNode extends VBox {
 //            }
 //        });
 
-
         setOnDragOver(new EventHandler<DragEvent>() {
             @Override
             public void handle(DragEvent event) {
-                if (event.getDragboard()
+                if (!getSpace().isBlank() && event.getDragboard()
                         .hasContent(PlayerView.playerDataFormat)) {
                     event.acceptTransferModes(TransferMode.ANY);
                 }
@@ -90,14 +91,14 @@ public class SpaceNode extends VBox {
             public void handle(DragEvent event) {
                 event.consume();
                 GameEngine gameEngine = ComponentManager.getInstance().getBean(GameEngine.class);
-                gameEngine.moveTo(space);
+                gameEngine.moveTo(getSpace());
             }
         });
 
         setOnMouseClicked(event -> {
             event.consume();
-            if (space instanceof Door) {
-                gameEngine.openDoor((Door) space);
+            if (getSpace() instanceof Door) {
+                gameEngine.openDoor((Door) getSpace());
             }
 
         });
@@ -112,19 +113,19 @@ public class SpaceNode extends VBox {
         }
         this.space = space;
         String valueString;
-        if (space.isBlank()) {
+        if (this.space.isBlank()) {
             valueString = "";
-        } else if (space instanceof Door) {
-            if (!space.isDiscovered()) {
+        } else if (this.space instanceof Door) {
+            if (!this.space.isDiscovered()) {
                 valueString = "?";
-            } else if (space.isLocked()) {
+            } else if (this.space.isLocked()) {
                 valueString = "L";
-            } else if (space.isClosed()) {
+            } else if (this.space.isClosed()) {
                 valueString = "C";
             } else {
                 valueString ="O";
             }
-        } else if (space instanceof Room) {
+        } else if (this.space instanceof Room) {
             valueString = "Room";
         } else {
             valueString = "Unknown";
@@ -145,5 +146,9 @@ public class SpaceNode extends VBox {
     }
     public void removeContent(Node node) {
         content.getChildren().remove(node);
+    }
+
+    public Space getSpace() {
+        return space;
     }
 }

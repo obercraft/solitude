@@ -64,7 +64,7 @@ public class MissionMap implements Serializable {
                     }
                 }
             }
-        } else if (sourceY == sourceY) {
+        } else if (sourceY == targetY) {
             int start = Math.min(sourceX, targetX);
             int end = Math.max(sourceX, targetX);
             for (int x = start + 1; x <= end; x++) {

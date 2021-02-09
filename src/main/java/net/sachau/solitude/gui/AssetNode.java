@@ -1,6 +1,8 @@
 package net.sachau.solitude.gui;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
@@ -27,9 +29,13 @@ public class AssetNode extends StackPane {
         this.setMaxSize(size, size);
         this.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        this.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        ImageView imageView = new ImageView(Icons.get(asset.getIcon()));
+        imageView.setFitWidth(size);
+        imageView.setFitHeight(size);
 
         Tooltip.install(this, toolTip);
-        getChildren().add(text);
+        getChildren().addAll(imageView, text);
         update(asset);
 
         setOnMouseClicked(event -> {
@@ -42,7 +48,6 @@ public class AssetNode extends StackPane {
         this.asset = asset;
         toolTip.setText(asset.getName());
         text.getChildren().clear();
-        text.getChildren().addAll(TextNode.builder().symbol(asset.getSymbol().getText()).write());
     }
 
 }

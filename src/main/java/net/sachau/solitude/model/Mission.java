@@ -23,27 +23,27 @@ public abstract class Mission implements Serializable {
 
         // create action cards
         {
-            for (int i = 1; i <= 2; i++) {
-                actionCards.add(new ActionCard(0, 1, 1));
+
+            // re-shuffle card
+            actionCards.add(new ActionCard(-1));
+
+            for (int i = 1; i <= 4; i++) {
+                actionCards.add(new ActionCard(0, false, true));
             }
 
-            for (int i = 1; i <= 2; i++) {
-                actionCards.add(new ActionCard(0, 1, 0));
-            }
-
 
             for (int i = 1; i <= 2; i++) {
-                actionCards.add(new ActionCard(2, 0, 1));
+                actionCards.add(new ActionCard(2));
             }
             for (int i = 1; i <= 2; i++) {
-                actionCards.add(new ActionCard(2, 1, 0));
+                actionCards.add(new ActionCard(2, true, false));
             }
 
             for (int i = 1; i <= 20; i++) {
                 actionCards.add(new ActionCard(1));
             }
 
-            for (int i = 1; i <= 24; i++) {
+            for (int i = 1; i <= 22; i++) {
                 actionCards.add(new ActionCard(0));
             }
             int index = 0;
@@ -99,13 +99,17 @@ public abstract class Mission implements Serializable {
 
     public boolean drawResult() {
         ActionCard card = actionCards.draw();
-        return card.getSuccesses() > 0;
+        return drawResult(1) > 0;
     }
 
     public int drawResult(int amount) {
         int result = 0;
         for (int i = 0; i < amount; i++) {
             ActionCard card = actionCards.draw();
+            while (card.getSuccesses() == -1) {
+                actionCards.shuffle();
+                card = actionCards.draw();
+            }
             result += card.getSuccesses();
         }
         return result;

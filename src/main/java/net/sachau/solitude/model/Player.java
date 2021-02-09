@@ -1,5 +1,6 @@
 package net.sachau.solitude.model;
 
+import net.sachau.solitude.items.Armor;
 import net.sachau.solitude.items.Item;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public class Player implements Serializable {
 
-    public static int MAX_ACTIONS = 2;
+    public static int MAX_ACTIONS = 300;
     public static int MAX_HITS = 5;
 
     private int turn = 1;
@@ -158,5 +159,12 @@ public class Player implements Serializable {
 
     public void setBody(Item body) {
         this.body = body;
+    }
+
+    public Armor getArmor() {
+        if (body != null && body instanceof Armor) {
+            return (Armor) body;
+        }
+        return null;
     }
 }

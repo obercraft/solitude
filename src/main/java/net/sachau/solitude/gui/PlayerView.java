@@ -3,6 +3,8 @@ package net.sachau.solitude.gui;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +25,8 @@ public class PlayerView extends VBox {
 
     public static final DataFormat playerDataFormat = new DataFormat("player");
 
+    private static final int size = 60;
+
     private final GameEngine gameEngine;
     Text label = new Text();
     StringProperty value = new SimpleStringProperty();
@@ -31,15 +35,20 @@ public class PlayerView extends VBox {
     public PlayerView(GameEngine gameEngine) {
         super();
         this.gameEngine = gameEngine;
-        this.setHeight(40);
-        this.setWidth(40);
-        this.setMinSize(40, 40);
-        this.setMaxSize(40,40);
+        this.setHeight(size);
+        this.setWidth(size);
+        this.setMinSize(size, size);
+        this.setMaxSize(size,size);
         this.setBorder(new Border(new BorderStroke(Color.BLACK,
                 BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        //his.setBackground(new BackgroundFill(Color.BLACK, null, null));
+        this.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
         label.textProperty().bind(value);
-        getChildren().add(label);
+        ImageView imageView = new ImageView(Icons.get(Icons.Name.PLAYER));
+        imageView.setFitWidth(size);
+        imageView.setFitHeight(size);
+        getChildren().add(imageView);
 
         update();
 

@@ -8,6 +8,7 @@ import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.items.FirstAidKit;
 import net.sachau.solitude.model.*;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Observable;
 import java.util.Observer;
@@ -16,6 +17,7 @@ public class Mission1 extends Mission implements Observer {
 
     private MissionMap map;
     private boolean goalReached = false;
+    private Room startingPosition;
 
     public Mission1() {
         super();
@@ -29,8 +31,67 @@ public class Mission1 extends Mission implements Observer {
     public void generateMap(GameEngine gameEngine) {
         int height = 3*2;
         int width = 5*2;
+
+        MissionMapParseResult missionMapParseResult;
+        try {
+            missionMapParseResult = MissionParser.parseMission("1");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        height = missionMapParseResult.getHeight();
+        width = missionMapParseResult.getWidth();
+
         map = new MissionMap(height, width);
 
+        int y = 0;
+        for (String line : missionMapParseResult.getLines()) {
+            for (int x = 0; x < line.length(); x ++) {
+                char c = line.charAt(x);
+                switch (c) {
+                    case '_': {
+                        Room room = new Room(y, x);
+                        room.setBlank(true);
+                        map.addSpace(room, y, x);
+                        break;
+
+                    }
+                    case 'E': {
+                        Room elevator = new Room(y, x);
+                        elevator.addAsset(new Elevator());
+                        map.addSpace(elevator, y, x);
+                        break;
+                    }
+                    case 'S':
+                    case '#': {
+                        map.addSpace(new Room(y, x), y, x);
+                        if (c == 'S') {
+                            startingPosition = (Room) map.getSpace(y,x);
+                        }
+                        break;
+                    }
+                    case '~':
+                    case 'v':
+                    case '*': {
+                        Door door = new Door(y, x, true);
+                        if (c == '~') {
+                            door.setBlank(true);
+                        }
+                        //Door door = new Door(y, x, !drawResult());
+                        if (c == 'v') {
+                            door.setVertical(true);
+                        }
+                        map.addSpace(door, y, x);
+                        break;
+
+                    }
+
+                }
+            }
+            y++;
+        }
+
+        /*
         for (int h = 0; h < height; h++) {
             for (int w = 0; w < width; w++) {
                 if ((h % 2) ==0) {
@@ -86,8 +147,8 @@ public class Mission1 extends Mission implements Observer {
                 }
             }
         }
-        Room elevator = (Room) map.getSpace(height/2 -1, width -2);
-        elevator.addAsset(new Elevator());
+
+         */
         startingPosition().addProperty(new Locker());
         getItemChits().add(new FirstAidKit());
         //startingPosition().addProperty(Asset.Type.LOCKER);
@@ -101,7 +162,7 @@ public class Mission1 extends Mission implements Observer {
 
     @Override
     public Room startingPosition() {
-        return (Room) map.getSpace(0,0);
+        return startingPosition;
     }
 
     @Override

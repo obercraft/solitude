@@ -1,6 +1,7 @@
 package net.sachau.solitude.model;
 
 import net.sachau.solitude.engine.GameEngine;
+import net.sachau.solitude.gui.Icons;
 import net.sachau.solitude.text.Symbol;
 
 public abstract class Asset {
@@ -9,11 +10,11 @@ public abstract class Asset {
     // -1 is unlimited
     private int uses = -1;
 
-    private Symbol symbol;
+    private Icons.Name icon;
 
-    public Asset(String name, Symbol symbol) {
+    public Asset(String name, Icons.Name icon) {
         this.name = name;
-        this.symbol = symbol;
+        this.icon  = icon;
     }
 
     public int getUses() {
@@ -34,11 +35,11 @@ public abstract class Asset {
         this.name = name;
     }
 
-    public Symbol getSymbol() {
-        return symbol;
+    public Icons.Name getIcon() {
+        return icon;
     }
 
-    public void setSymbol(Symbol symbol) {
-        this.symbol = symbol;
+    public void setIcon(Icons.Name icon) {
+        this.icon = icon;
     }
 }

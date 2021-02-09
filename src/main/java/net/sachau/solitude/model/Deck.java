@@ -25,11 +25,13 @@ public class Deck<CARD extends Card> {
     }
 
     public void shuffle() {
-        for (CARD card : this.drawPile) {
-            card.setVisible(false);
+        if (this.discardPile.size() > 0) {
+            this.drawPile.addAll(this.discardPile);
+            this.discardPile.clear();
         }
         Collections.shuffle(this.drawPile);
     }
+
 
     public CARD draw() {
         if (this.drawPile.size() > 0) {
@@ -37,8 +39,6 @@ public class Deck<CARD extends Card> {
             this.discardPile.add(drawnCard);
             return drawnCard;
         } else {
-            this.drawPile.addAll(discardPile);
-            this.discardPile.clear();
             shuffle();
             return this.draw();
         }
@@ -61,4 +61,6 @@ public class Deck<CARD extends Card> {
     public List<CARD> getDrawPile() {
         return drawPile;
     }
+
+
 }
