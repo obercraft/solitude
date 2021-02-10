@@ -1,8 +1,14 @@
-package net.sachau.solitude.model;
+package net.sachau.solitude.missions;
 
+import net.sachau.solitude.cards.ActionCard;
+import net.sachau.solitude.cards.Deck;
+import net.sachau.solitude.cards.EnemyCard;
+import net.sachau.solitude.enemies.Enemy;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.items.Item;
-import net.sachau.solitude.model.enemies.Type1;
+import net.sachau.solitude.enemies.Type1;
+import net.sachau.solitude.model.Chits;
+import net.sachau.solitude.model.Room;
 
 import java.io.Serializable;
 import java.util.Map;

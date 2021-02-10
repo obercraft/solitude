@@ -1,6 +1,4 @@
-package net.sachau.solitude.model.enemies;
-
-import net.sachau.solitude.model.Enemy;
+package net.sachau.solitude.enemies;
 
 public class Type1 extends Enemy {
 

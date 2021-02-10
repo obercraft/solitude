@@ -1,8 +1,5 @@
 package net.sachau.solitude.missions;
 
-import net.sachau.solitude.engine.GameEngine;
-import net.sachau.solitude.model.Mission;
-import net.sachau.solitude.model.Room;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;

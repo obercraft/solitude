@@ -2,6 +2,7 @@ package net.sachau.solitude.gui;
 
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import net.sachau.solitude.enemies.Enemy;
 import net.sachau.solitude.engine.*;
 import net.sachau.solitude.model.*;
 
@@ -63,24 +64,11 @@ public class MissionMapView extends AnchorPane implements Observer {
         }
 
 
-        playerLocation = locations[gameEngine.getMission().startingPosition().
+        playerLocation = locations[gameEngine.getMission().startingPosition().getY()][gameEngine.getMission().startingPosition().getX()];
+        gameEngine.getPlayer().setY(gameEngine.getMission().startingPosition().getY());
+        gameEngine.getPlayer().setX(gameEngine.getMission().startingPosition().getX());
 
-                getY()][gameEngine.getMission()
-                .
-
-                        startingPosition()
-                .
-
-                        getX()];
-
-        for (
-                Map.Entry<Long, Enemy> enemy : gameEngine.getMission()
-                .
-
-                        getEnemies()
-                .
-
-                        entrySet()) {
+        for (Map.Entry<Long, Enemy> enemy : gameEngine.getMission().getEnemies().entrySet()) {
             EnemyNode enemyNode = new EnemyNode(enemy.getValue());
             locations[enemy.getValue()
                     .getY()][enemy.getValue()
@@ -111,7 +99,12 @@ public class MissionMapView extends AnchorPane implements Observer {
                 enemy.setRevealed(true);
             }
             EnemyNode ev = enemyViews.get(enemy.getId());
-            if (enemy.hasMoved()) {
+            if (enemy.isCreated()) {
+                ev = new EnemyNode(enemy);
+                enemyViews.put(enemy.getId(), ev);
+                locations[enemy.getY()][enemy.getX()].addContent(ev);
+                enemy.setCreated(false);
+            } else if (enemy.hasMoved()) {
                 locations[enemy.getLastY()][enemy.getLastX()].removeContent(ev);
                 locations[enemy.getY()][enemy.getX()].addContent(ev);
             }
@@ -226,6 +219,10 @@ public class MissionMapView extends AnchorPane implements Observer {
                 Door door = Events.getData(Door.class, arg);
                 locations[door.getY()][door.getX()].update(door);
                 gameEngine.send(Event.PLAYER_UPDATE);
+                return;
+            }
+            case UPDATE_ENEMIES: {
+                updateEnemies();
                 return;
             }
         }

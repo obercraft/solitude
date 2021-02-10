@@ -3,10 +3,6 @@ package net.sachau.solitude;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import net.sachau.solitude.engine.Event;
@@ -14,9 +10,8 @@ import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.gui.*;
 import net.sachau.solitude.model.GameState;
 import net.sachau.solitude.missions.Mission1;
-import net.sachau.solitude.model.Mission;
+import net.sachau.solitude.missions.Mission;
 import net.sachau.solitude.model.Player;
-import net.sachau.solitude.items.Weapon;
 
 public class SolitudeApplication extends Application {
 

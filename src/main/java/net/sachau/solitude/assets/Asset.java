@@ -1,4 +1,4 @@
-package net.sachau.solitude.model;
+package net.sachau.solitude.assets;
 
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.gui.Icons;
@@ -17,6 +17,9 @@ public abstract class Asset {
         this.icon  = icon;
     }
 
+    public abstract void use(GameEngine gameEngine);
+    public abstract void executeEndOfTurn(GameEngine gameEngine);
+
     public int getUses() {
         return uses;
     }
@@ -25,7 +28,7 @@ public abstract class Asset {
         this.uses = uses;
     }
 
-    public abstract void use(GameEngine gameEngine);
+
 
     public String getName() {
         return name;

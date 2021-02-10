@@ -1,12 +1,8 @@
 package net.sachau.solitude.model;
 
-import net.sachau.solitude.model.Mission;
-import net.sachau.solitude.model.MissionMap;
-import net.sachau.solitude.model.Player;
+import net.sachau.solitude.missions.Mission;
 
 import java.io.Serializable;
-import java.util.Observable;
-import java.util.Observer;
 
 public class GameState implements Serializable {
 

@@ -1,4 +1,8 @@
-package net.sachau.solitude.model;
+package net.sachau.solitude.missions;
+
+import net.sachau.solitude.model.Distance;
+import net.sachau.solitude.model.Room;
+import net.sachau.solitude.model.Space;
 
 import java.io.Serializable;
 
@@ -10,7 +14,6 @@ public class MissionMap implements Serializable {
 
     // height, with
     private Space[][] spaces;
-    private int doorCount;
 
     public MissionMap() {
         spaces = new Space[height][width];

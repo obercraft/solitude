@@ -8,8 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.model.Room;
-import net.sachau.solitude.model.Asset;
-import net.sachau.solitude.text.TextNode;
+import net.sachau.solitude.assets.Asset;
 
 public class AssetNode extends StackPane {
 

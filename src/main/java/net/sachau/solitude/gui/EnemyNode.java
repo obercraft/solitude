@@ -5,9 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import net.sachau.solitude.ComponentManager;
 import net.sachau.solitude.engine.GameEngine;
-import net.sachau.solitude.model.Door;
-import net.sachau.solitude.model.Enemy;
-import net.sachau.solitude.model.MissionMap;
+import net.sachau.solitude.enemies.Enemy;
 
 public class EnemyNode extends StackPane {
 

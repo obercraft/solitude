@@ -1,12 +1,20 @@
 package net.sachau.solitude.engine;
 
 import net.sachau.solitude.Logger;
+import net.sachau.solitude.assets.Asset;
+import net.sachau.solitude.cards.ActionCard;
+import net.sachau.solitude.cards.EventCard;
+import net.sachau.solitude.enemies.Enemy;
+import net.sachau.solitude.enemies.EnemyFactory;
 import net.sachau.solitude.items.Armor;
 import net.sachau.solitude.items.Weapon;
+import net.sachau.solitude.missions.Mission;
+import net.sachau.solitude.missions.MissionMap;
 import net.sachau.solitude.model.*;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 @Component
 public class GameEngine implements Observer {
@@ -92,6 +100,7 @@ public class GameEngine implements Observer {
                 }
 
 
+                spaceActivation();
                 enemyActivation();
                 send(Event.NEXT_TURN_GUI);
                 return;
@@ -99,6 +108,25 @@ public class GameEngine implements Observer {
 
         }
 
+    }
+
+    private void spaceActivation() {
+        MissionMap map = getMissionMap();
+        int height = map.getHeight();
+        int width = map.getWidth();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Space space = map.getSpace(y,x);
+                if (space instanceof Room && space.isDiscovered()) {
+                    Set<Asset> assets = ((Room) space).getAssets();
+                    if (assets != null) {
+                        for (Asset asset : assets) {
+                            asset.executeEndOfTurn(this);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void addObserver(Observer object) {
@@ -116,7 +144,14 @@ public class GameEngine implements Observer {
             sendError("no action left");
             return;
         }
-
+        Distance distance = getMissionMap().calculateDistance(player.getY(), player.getX(), targetDoor.getY(), targetDoor.getX());
+        if (distance.getRooms() > 1) {
+            sendError("too far away");
+            return;
+        } else if (distance.isDiagonal()) {
+            sendError("diagonal not allowed");
+            return;
+        }
         if (targetDoor.isLocked()) {
             sendError("door is locked");
             return;
@@ -162,6 +197,12 @@ public class GameEngine implements Observer {
             player.setX(space.getX());
             player.setY(space.getY());
             player.useAction();
+
+            if (space.getEventCard() != null) {
+                EventCard eventCard = space.getEventCard();
+                eventCard.execute(this);
+                space.setEventCard(null);
+            }
 
             int stealth = player.getStealth() + 1;
             int stealthResult = getMission().drawResult(stealth);
@@ -427,6 +468,11 @@ public class GameEngine implements Observer {
             }
         }
         return new EnterResult(false, null);
+    }
+
+    public void addEnemy(Enemy.Type type) {
+        Enemy enemy = EnemyFactory.create(type, getPlayer().getY(), getPlayer().getX());
+        getMission().getEnemies().put(enemy.getId(), enemy);
     }
 
     private class EnterResult {

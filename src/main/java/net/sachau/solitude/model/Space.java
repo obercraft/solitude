@@ -1,5 +1,7 @@
 package net.sachau.solitude.model;
 
+import net.sachau.solitude.cards.EventCard;
+
 public abstract class Space {
 
     private int y,x;
@@ -7,6 +9,9 @@ public abstract class Space {
     private boolean locked;
     private boolean blank = false;
     private boolean discovered;
+
+    public EventCard eventCard;
+
     public Space(int y, int x) {
         this.y = y;
         this.x = x;
@@ -60,6 +65,15 @@ public abstract class Space {
         this.closed = closed;
     }
 
+    public EventCard getEventCard() {
+        return eventCard;
+    }
+
+    public void setEventCard(EventCard eventCard) {
+        this.eventCard = eventCard;
+    }
+
+
     @Override
     public String toString() {
         return "Space{" +
@@ -69,8 +83,7 @@ public abstract class Space {
                 ", locked=" + locked +
                 ", blank=" + blank +
                 ", discovered=" + discovered +
+                ", eventCard=" + eventCard +
                 '}';
     }
-
-
 }

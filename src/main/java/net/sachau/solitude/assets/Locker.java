@@ -4,8 +4,6 @@ import net.sachau.solitude.Messages;
 import net.sachau.solitude.engine.Event;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.gui.Icons;
-import net.sachau.solitude.model.Asset;
-import net.sachau.solitude.text.Symbol;
 
 public class Locker extends Asset {
 
@@ -22,5 +20,10 @@ public class Locker extends Asset {
         } else {
             gameEngine.sendError("no more items");
         }
+    }
+
+    @Override
+    public void executeEndOfTurn(GameEngine gameEngine) {
+
     }
 }

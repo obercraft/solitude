@@ -1,14 +1,20 @@
-package net.sachau.solitude.model;
+package net.sachau.solitude.enemies;
 
 import net.sachau.solitude.engine.Id;
 
-public abstract class Enemy {
+public class Enemy {
+
+    public enum Type {
+        TYPE1,
+    }
 
     private long id = Id.get();
     private int y, x, lastY, lastX;
     private boolean alerted;
     private int hits, damage, attack;
     private boolean revealed;
+    private boolean created;
+
 
     public Enemy(Integer y, Integer x) {
         this.y = y;
@@ -99,5 +105,13 @@ public abstract class Enemy {
 
     public void setAttack(int attack) {
         this.attack = attack;
+    }
+
+    public boolean isCreated() {
+        return created;
+    }
+
+    public void setCreated(boolean created) {
+        this.created = created;
     }
 }

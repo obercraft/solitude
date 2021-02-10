@@ -1,4 +1,4 @@
-package net.sachau.solitude.model;
+package net.sachau.solitude.cards;
 
 import java.util.ArrayList;
 import java.util.List;

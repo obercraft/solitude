@@ -10,10 +10,10 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
 import net.sachau.solitude.ComponentManager;
+import net.sachau.solitude.assets.Asset;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.model.*;
 import net.sachau.solitude.text.TextNode;
-import net.sachau.solitude.text.Symbol;
 
 import java.util.Set;
 
@@ -97,6 +97,7 @@ public class SpaceNode extends VBox {
 
         setOnMouseClicked(event -> {
             event.consume();
+            System.out.println(getSpace());
             if (getSpace() instanceof Door) {
                 gameEngine.openDoor((Door) getSpace());
             }
@@ -136,7 +137,7 @@ public class SpaceNode extends VBox {
         label.getChildren().clear();
         TextFlow newText = TextNode.builder().styleOn("font", "standard").styleOn("size", "16")
                 .add(valueString)
-                .symbol(Symbol.FA_ARROWS_ALT_V.getText())
+                //.symbol(Symbol.FA_ARROWS_ALT_V.getText())
                 .write();
         label.getChildren().addAll(newText.getChildren());
     }
