@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import net.sachau.solitude.Messages;
 import net.sachau.solitude.engine.*;
 import net.sachau.solitude.model.Player;
 
@@ -16,7 +17,7 @@ public class TurnView extends HBox implements Observer {
     private final GameEngine gameEngine;
 
 
-    Button nextTurn = new Button("NEXT");
+    Button nextTurn = new Button(Messages.get("game.next-turn"));
 
 
     HBox hands = new HBox();
@@ -27,10 +28,10 @@ public class TurnView extends HBox implements Observer {
     public TurnView(GameEngine gameEngine) {
         super();
         this.gameEngine = gameEngine;
+        playerStatus.getStyleClass().add("root");
         gameEngine.addObserver(this);
         setMinHeight(80);
-        this.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
 
         nextTurn.setOnMouseClicked(event -> {
             gameEngine.send(Event.NEXT_TURN);
@@ -44,17 +45,18 @@ public class TurnView extends HBox implements Observer {
     public void update() {
         Player player = gameEngine.getPlayer();
         if (player != null) {
-            StringBuilder sb =  new StringBuilder();
-            sb
-                    .append("[").append(player.getY()).append(",").append(player.getX()).append("]")
-                    .append(" / ")
-                    .append("Actions: ").append(player.getActions())
-                    .append(" / ")
-                    .append("Hits: ").append(player.getHits())
-                    .append(" / ")
-                    .append("Turn: ").append(player.getTurn());
+            String bar = Messages.get("game.turn-bar", player.getY(), player.getX(), player.getActions(), player.getHits(), player.getTurn());
+//            StringBuilder sb =  new StringBuilder();
+//            sb
+//                    .append("[").append(player.getY()).append(",").append(player.getX()).append("]")
+//                    .append(" / ")
+//                    .append("Actions: ").append(player.getActions())
+//                    .append(" / ")
+//                    .append("Hits: ").append(player.getHits())
+//                    .append(" / ")
+//                    .append("Turn: ").append(player.getTurn());
 
-            playerStatus.setText(sb.toString());
+            playerStatus.setText(bar);
         }
     }
 

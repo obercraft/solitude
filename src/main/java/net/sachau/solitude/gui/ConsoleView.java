@@ -28,6 +28,8 @@ public class ConsoleView extends ScrollPane implements Observer {
         this.setContent(textFlow);
 
         ConsoleView pane = this;
+        textFlow.getStyleClass().add("steel");
+        this.getStyleClass().add("steel");
         textFlow.heightProperty()
                 .addListener(
                         (observable, oldValue, newValue) -> {

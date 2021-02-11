@@ -1,6 +1,6 @@
 package net.sachau.solitude.model;
 
-import net.sachau.solitude.cards.EventCard;
+import net.sachau.solitude.card.EventCard;
 
 public abstract class Space {
 

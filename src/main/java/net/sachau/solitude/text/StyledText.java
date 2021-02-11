@@ -29,7 +29,7 @@ public class StyledText {
 
     public Text get() {
         Text styleText = new Text(text);
-        styleText.setFill(Color.BLACK);
+        styleText.setFill(Color.WHITE);
 
         styleText.setFont(Fonts.getInstance().get("standard", 12));
         if (styles != null) {

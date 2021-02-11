@@ -1,5 +1,6 @@
 package net.sachau.solitude;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -23,6 +24,11 @@ public class Messages {
     }
     public static String get(String name) {
         return getInstance().getBundle().getString(name);
+    }
+
+    public static String get(String name, Object ...objects) {
+        String pattern = getInstance().getBundle().getString(name);
+        return MessageFormat.format(pattern, objects);
     }
 
     public ResourceBundle getBundle() {

@@ -4,7 +4,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import net.sachau.solitude.engine.*;
-import net.sachau.solitude.items.Item;
+import net.sachau.solitude.item.Item;
 
 import java.util.Observable;
 import java.util.Observer;

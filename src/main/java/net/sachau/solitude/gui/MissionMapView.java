@@ -1,8 +1,9 @@
 package net.sachau.solitude.gui;
 
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import net.sachau.solitude.enemies.Enemy;
+import net.sachau.solitude.enemy.Enemy;
 import net.sachau.solitude.engine.*;
 import net.sachau.solitude.model.*;
 
@@ -12,7 +13,7 @@ import java.util.Observer;
 import java.util.concurrent.ConcurrentHashMap;
 
 @View
-public class MissionMapView extends AnchorPane implements Observer {
+public class MissionMapView extends ScrollPane implements Observer {
 
     public static int roomWidth = 150;
     public static int roomHeight = 150;
@@ -27,11 +28,20 @@ public class MissionMapView extends AnchorPane implements Observer {
 
     SpaceNode locations[][];
 
+    private AnchorPane mapArea = new AnchorPane();
+
     @Autowired
     public MissionMapView(GameEngine gameEngine, PlayerView playerView) {
         super();
         this.gameEngine = gameEngine;
         this.playerView = playerView;
+        setContent(mapArea);
+        this.getStyleClass().add("steel");
+        mapArea.getStyleClass().add("steel");
+        update();
+    }
+    public void update() {
+
         gameEngine.addObserver(this);
         int height = gameEngine.getMissionMap()
                 .getHeight();
@@ -51,7 +61,7 @@ public class MissionMapView extends AnchorPane implements Observer {
 
                 if (space != null) {
                     locations[h][w] = new SpaceNode(gameEngine, space);
-                    getChildren().add(locations[h][w]);
+                    mapArea.getChildren().add(locations[h][w]);
                     locations[h][w].relocate(offsetLeft, offsetTop);
                     offsetLeft += locations[h][w].getMaxWidth();
                     if (!space.isBlank()) {

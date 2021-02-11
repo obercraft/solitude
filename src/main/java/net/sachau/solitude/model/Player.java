@@ -1,7 +1,7 @@
 package net.sachau.solitude.model;
 
-import net.sachau.solitude.items.Armor;
-import net.sachau.solitude.items.Item;
+import net.sachau.solitude.item.Armor;
+import net.sachau.solitude.item.Item;
 
 import java.io.Serializable;
 import java.util.ArrayList;

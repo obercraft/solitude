@@ -1,0 +1,12 @@
+.root{
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: transparent;
+    /*
+    -fx-background-color: #43464B;
+
+    -fx-border-color: #FFFFFF;
+     */
+}
+.steel {
+    -fx-background-color: #43464B;
+}

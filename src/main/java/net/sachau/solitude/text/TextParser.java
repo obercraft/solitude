@@ -1,6 +1,7 @@
 package net.sachau.solitude.text;
 
 
+import net.sachau.solitude.Messages;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.w3c.dom.Document;
@@ -18,6 +19,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TextParser {
 
@@ -100,12 +103,33 @@ public class TextParser {
                 parse(child, name, textBuilder);
                 textBuilder.styleOff("color");
             } else {
-                textBuilder.add(child.getTextContent()
-                        .trim());
+                textBuilder.add(replacePlaceholders(child.getTextContent()
+                        .trim()));
                 parse(child, name, textBuilder);
             }
 
         }
+    }
+
+    public static String replacePlaceholders(String expression) {
+
+        String resultString = new String(expression);
+        if (resultString == null) {
+            return null;
+        }
+        // replace all ${key} with their value
+        Pattern pattern = Pattern.compile("(\\$\\{(.*?)\\})");
+
+        Matcher matcher = pattern.matcher(resultString);
+        String token, stringValue;
+        Object value;
+        while (matcher.find()) {
+            token = matcher.group(2);
+            if ((value = Messages.get(token)) != null) {
+                resultString = StringUtils.replace(resultString, matcher.group(1), (String) value);
+            }
+        }
+        return resultString;
     }
 
 }

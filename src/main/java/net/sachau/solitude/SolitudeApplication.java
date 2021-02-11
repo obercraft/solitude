@@ -9,8 +9,8 @@ import net.sachau.solitude.engine.Event;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.gui.*;
 import net.sachau.solitude.model.GameState;
-import net.sachau.solitude.missions.Mission1;
-import net.sachau.solitude.missions.Mission;
+import net.sachau.solitude.mission.Mission1;
+import net.sachau.solitude.mission.Mission;
 import net.sachau.solitude.model.Player;
 
 public class SolitudeApplication extends Application {
@@ -42,7 +42,7 @@ public class SolitudeApplication extends Application {
 
         GameboardView gameboardView = ComponentManager.getInstance().getBean(GameboardView.class);
         Scene scene = new Scene(gameboardView, primaryScreenBounds.getWidth() -100, primaryScreenBounds.getHeight() -100);
-
+        scene.getStylesheets().add(this.getClass().getResource("/application.css").toExternalForm());
 
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -1,6 +1,6 @@
 package net.sachau.solitude.model;
 
-import net.sachau.solitude.assets.Asset;
+import net.sachau.solitude.asset.Asset;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,11 +26,8 @@ public class Room extends Space {
         this.assets = assets;
     }
 
-    public void addProperty(Asset property) {
-        this.assets.add(property);
-    }
-
-    public void addAsset(Asset asset) {
+    public void addAsset(Asset asset, Space space) {
+        asset.setSpace(space);
         this.assets.add(asset);
     }
 

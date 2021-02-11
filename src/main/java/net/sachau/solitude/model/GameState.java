@@ -1,6 +1,6 @@
 package net.sachau.solitude.model;
 
-import net.sachau.solitude.missions.Mission;
+import net.sachau.solitude.mission.Mission;
 
 import java.io.Serializable;
 

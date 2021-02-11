@@ -4,20 +4,21 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
 import net.sachau.solitude.ComponentManager;
-import net.sachau.solitude.assets.Asset;
+import net.sachau.solitude.asset.Asset;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.model.*;
 import net.sachau.solitude.text.TextNode;
 
 import java.util.Set;
 
-public class SpaceNode extends VBox {
+public class SpaceNode extends ScrollPane {
 
     private final GameEngine gameEngine;
 
@@ -26,10 +27,21 @@ public class SpaceNode extends VBox {
     TextFlow label = new TextFlow();
     FlowPane content = new FlowPane();
     FlowPane properties = new FlowPane();
+    private VBox spaceArea = new VBox();
+
     Space space;
 
     public SpaceNode(GameEngine gameEngine, Space space) {
         super();
+        setContent(spaceArea);
+        this.getStyleClass().add("steel");
+        label.getStyleClass().add("steel");
+        content.getStyleClass().add("steel");
+        properties.getStyleClass().add("steel");
+        spaceArea.getStyleClass().add("steel");
+
+
+
         this.gameEngine = gameEngine;
         this.space = space;
         int height = MissionMapView.roomHeight;
@@ -46,10 +58,6 @@ public class SpaceNode extends VBox {
 
         this.setMinSize(width, height);
         this.setMaxSize(width,height);
-        if (!space.isBlank()) {
-            this.setBorder(new Border(new BorderStroke(Color.BLACK,
-                    BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        }
 
         if (space instanceof Room){
             Room room = (Room) space;
@@ -61,7 +69,7 @@ public class SpaceNode extends VBox {
             }
         }
 
-        getChildren().addAll(label, content, properties);
+        spaceArea.getChildren().addAll(label, content, properties);
         update(space);
 
 //        value.addListener(new ChangeListener<String>() {

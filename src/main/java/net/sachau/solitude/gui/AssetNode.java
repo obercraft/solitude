@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextFlow;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.model.Room;
-import net.sachau.solitude.assets.Asset;
+import net.sachau.solitude.asset.Asset;
 
 public class AssetNode extends StackPane {
 
@@ -26,8 +26,6 @@ public class AssetNode extends StackPane {
         this.setWidth(size);
         this.setMinSize(size, size);
         this.setMaxSize(size, size);
-        this.setBorder(new Border(new BorderStroke(Color.BLACK,
-                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         ImageView imageView = new ImageView(Icons.get(asset.getIcon()));
         imageView.setFitWidth(size);

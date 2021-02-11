@@ -1,15 +1,15 @@
 package net.sachau.solitude.engine;
 
 import net.sachau.solitude.Logger;
-import net.sachau.solitude.assets.Asset;
-import net.sachau.solitude.cards.ActionCard;
-import net.sachau.solitude.cards.EventCard;
-import net.sachau.solitude.enemies.Enemy;
-import net.sachau.solitude.enemies.EnemyFactory;
-import net.sachau.solitude.items.Armor;
-import net.sachau.solitude.items.Weapon;
-import net.sachau.solitude.missions.Mission;
-import net.sachau.solitude.missions.MissionMap;
+import net.sachau.solitude.asset.Asset;
+import net.sachau.solitude.card.ActionCard;
+import net.sachau.solitude.card.EventCard;
+import net.sachau.solitude.enemy.Enemy;
+import net.sachau.solitude.enemy.EnemyFactory;
+import net.sachau.solitude.item.Armor;
+import net.sachau.solitude.item.Weapon;
+import net.sachau.solitude.mission.Mission;
+import net.sachau.solitude.mission.MissionMap;
 import net.sachau.solitude.model.*;
 
 import java.util.Observable;
@@ -90,6 +90,12 @@ public class GameEngine implements Observer {
                     send(Event.PLAYER_WON);
                     return;
                 }
+
+                if (getPlayer().getHits() <=0) {
+                    send(Event.PLAYER_DIED);
+                    return;
+                }
+
                 getPlayer()
                         .nextTurn();
                 if (getPlayer()
@@ -473,6 +479,9 @@ public class GameEngine implements Observer {
     public void addEnemy(Enemy.Type type) {
         Enemy enemy = EnemyFactory.create(type, getPlayer().getY(), getPlayer().getX());
         getMission().getEnemies().put(enemy.getId(), enemy);
+    }
+
+    public void handleFire() {
     }
 
     private class EnterResult {

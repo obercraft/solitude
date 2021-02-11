@@ -13,8 +13,15 @@ public class Icons {
         PLAYER("/icons/PNG/noun_soldier_3562840.png"),
         LOCKER("/icons/PNG/20 Cargo - Storage Unit.png"),
         ELEVATOR("/icons/PNG/94 Teleport-02.png"),
+        FIRE("/icons/PNG/noun_Fire_3723257.png"),
+        FIRE_EXTINGUISHER("/icons/PNG/noun_Fire Extinguisher_1711612.png"),
 
+        WEAPON("/icons/PNG/noun_Fire Extinguisher_1711612.png"),
+        ARMOR("/icons/PNG/noun_Fire Extinguisher_1711612.png"),
+
+        FA_FIRST_AID("/icons/PNG/noun_Fire Extinguisher_1711612.png"),
         ;
+
         private String fileName;
 
         Name(String fileName) {

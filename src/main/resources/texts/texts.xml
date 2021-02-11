@@ -4,12 +4,28 @@
     <text id="intro">
 
             <h1>Starship Solitude</h1>
-
-            <h3>
-                Hallo
-            </h3>
             <p>
-                asdf &exhausted;
+                Welcome to the spaceship ${name.ship}, an exploration vessel with a crew of 25. You are one of the officers on a mission in the deep regions of the galaxy.
             </p>
+    </text>
+    <text id="rules">
+        <h1>Rules</h1>
+        <p>
+            Each mission consists of a maximum number of turns, you must reach the mission's goal before that. On each turn you have two actions.
+            If you're done with your actions, press the "${game.next-turn}" button.
+        </p>
+        <h2>Actions</h2>
+        <i>Move:</i>
+        <h2>End of the turn</h2>
+        <h2>Enemies</h2>
+    </text>
+    <text id="mission1">
+        <h1>Mission 1: The Barracks</h1>
+        <p>
+            Suddenly, a harsh stop of the ship awakes you. You look around your room in the barrack-section of the ship. Your roomate ${name.roommate} is lying
+            facedown on the ground in a pool of blood. Was has happened to the ship?
+        </p>
+        <h2>Mission goal:</h2>
+        Leave the barracks and inspect the further regions of the ship. Maybe you also find something useful in the barracks
     </text>
 </texts>
