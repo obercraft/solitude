@@ -7,6 +7,7 @@ import net.sachau.solitude.card.ActionCard;
 import net.sachau.solitude.card.EventCard;
 import net.sachau.solitude.enemy.Enemy;
 import net.sachau.solitude.enemy.EnemyFactory;
+import net.sachau.solitude.experience.ExperienceGrid;
 import net.sachau.solitude.gui.Icons;
 import net.sachau.solitude.item.*;
 import net.sachau.solitude.mission.Mission;
@@ -220,7 +221,7 @@ public class GameEngine implements Observer {
                 space.setEventCard(null);
             }
 
-            int stealth = player.getStealth() + 1;
+            int stealth = player.getSkill(Skill.STEALTH);
             int stealthResult = getMission().drawResult(stealth);
 
             for (Enemy enemy : getMission().getEnemies().values()) {
@@ -326,7 +327,7 @@ public class GameEngine implements Observer {
             weapon.getDamage();
         }
 
-        int skill = player.getWeapon() + 1;
+        int skill = player.getSkill(Skill.ATTACK);
         player.useAction(ActionType.ATTACK);
         int result = 0;
         int ammo = 0;
@@ -552,6 +553,11 @@ public class GameEngine implements Observer {
         mission1.getActionCards().shuffle();
         GameState gameState = new GameState(player, mission1);
         setGameState(gameState);
+    }
+
+    public void updateExperience(ExperienceGrid experienceGrid) {
+        getPlayer().setSkills(experienceGrid.getIncreasedSkills());
+        send(Event.START_MISSION);
     }
 
     private class EnterResult {

@@ -10,16 +10,18 @@ import java.util.Observable;
 import java.util.Observer;
 
 @View
-public class GameBox extends HBox implements Observer {
+public class MainView extends HBox implements Observer {
 
     private final GameEngine gameEngine;
     private final TextManager textManager;
     private final GameboardView gameboardView;
+    private final ExperienceView experienceView;
 
     @Autowired
-    public GameBox(GameEngine gameEngine, TextManager textManager, GameboardView gameboardView) {
+    public MainView(GameEngine gameEngine, TextManager textManager, GameboardView gameboardView, ExperienceView experienceView) {
         super();
         this.gameboardView = gameboardView;
+        this.experienceView = experienceView;
         getStyleClass().add("steel");
         this.gameEngine = gameEngine;
         this.textManager = textManager;
@@ -49,10 +51,18 @@ public class GameBox extends HBox implements Observer {
             case START_GAME: {
                 gameEngine.startNewGame();
                 getChildren().clear();
+                experienceView.update();
+                getChildren().add(experienceView);
+                return;
+            }
+
+            case START_MISSION: {
+                getChildren().clear();
                 gameboardView.update();
                 getChildren().add(gameboardView);
                 return;
             }
+
         }
     }
 }

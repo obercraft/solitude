@@ -1,9 +1,12 @@
 package net.sachau.solitude.gui;
 
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import net.sachau.solitude.engine.*;
 import net.sachau.solitude.item.Item;
 import net.sachau.solitude.model.Player;
+import net.sachau.solitude.model.Skill;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -16,6 +19,7 @@ public class EquipmentView extends VBox implements Observer {
     HBox equipped = new HBox();
     FlowPane stash = new FlowPane();
 
+    VBox skills = new VBox();
 
     @Autowired
     public EquipmentView(GameEngine gameEngine) {
@@ -24,8 +28,8 @@ public class EquipmentView extends VBox implements Observer {
         gameEngine.addObserver(this);
         setMinSize(300,300);
         setMaxSize(300,300);
-
-        getChildren().addAll(equipped, stash);
+        skills.getStyleClass().add("steel");
+        getChildren().addAll(equipped, stash, skills);
         update();
 
     }
@@ -48,6 +52,14 @@ public class EquipmentView extends VBox implements Observer {
         stash.getChildren().clear();
         for (Item item : gameEngine.getPlayer().getStash()) {
             stash.getChildren().add(new ItemView(gameEngine, Item.Location.STASH, null, item));
+        }
+        skills.getChildren().clear();
+        for (Skill skill : Skill.values()) {
+            HBox skillRow = new HBox();
+            Text text = new Text(skill.getName() + ": " + gameEngine.getPlayer().getSkill(skill));
+            text.setFill(Color.WHITE);
+            skillRow.getChildren().add(text);
+            skills.getChildren().add(skillRow);
         }
     }
 

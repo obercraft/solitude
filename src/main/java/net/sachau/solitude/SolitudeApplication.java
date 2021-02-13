@@ -5,12 +5,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import net.sachau.solitude.engine.Events;
-import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.gui.*;
-
-import java.util.Observable;
-import java.util.Observer;
 
 public class SolitudeApplication extends Application {
 
@@ -21,7 +16,7 @@ public class SolitudeApplication extends Application {
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         componentManager.initViews();
 
-        GameBox startGameView = ComponentManager.getInstance().getBean(GameBox.class);
+        MainView startGameView = ComponentManager.getInstance().getBean(MainView.class);
         Scene scene = new Scene(startGameView, primaryScreenBounds.getWidth() -100, primaryScreenBounds.getHeight() -100);
         scene.getStylesheets().add(this.getClass().getResource("/application.css").toExternalForm());
 

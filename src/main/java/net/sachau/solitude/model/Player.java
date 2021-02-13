@@ -23,10 +23,7 @@ public class Player implements Serializable {
 
     private Weapon defaultWeapon = new Fist();
 
-    // Skills
-    private int weapon;
-    private int computer;
-    private int stealth;
+    private Map<Skill, Integer> skills = new HashMap<>();
 
     // hitpoints
     private int hits = MAX_HITS;
@@ -55,30 +52,6 @@ public class Player implements Serializable {
 
     public void setX(int x) {
         this.x = x;
-    }
-
-    public int getWeapon() {
-        return weapon;
-    }
-
-    public void setWeapon(int weapon) {
-        this.weapon = weapon;
-    }
-
-    public int getComputer() {
-        return computer;
-    }
-
-    public void setComputer(int computer) {
-        this.computer = computer;
-    }
-
-    public int getStealth() {
-        return stealth;
-    }
-
-    public void setStealth(int stealth) {
-        this.stealth = stealth;
     }
 
     public int getHits() {
@@ -198,5 +171,17 @@ public class Player implements Serializable {
 
     public void setDefaultWeapon(Weapon defaultWeapon) {
         this.defaultWeapon = defaultWeapon;
+    }
+
+    public Map<Skill, Integer> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Map<Skill, Integer> skills) {
+        this.skills = skills;
+    }
+    public int getSkill(Skill skill) {
+        Integer skillValue = skills.get(skill);
+        return skillValue != null ? skillValue.intValue() : 1;
     }
 }
