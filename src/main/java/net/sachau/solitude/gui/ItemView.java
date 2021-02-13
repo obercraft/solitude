@@ -21,12 +21,14 @@ public class ItemView extends VBox {
     Tooltip toolTip = new Tooltip();
     private Item item;
     private Item.Location location;
+    private Item.Position position;
 
-    public ItemView(GameEngine gameEngine, Item.Location location,  Item item) {
+    public ItemView(GameEngine gameEngine, Item.Location location,  Item.Position position, Item item) {
         super();
         this.gameEngine = gameEngine;
         this.item = item;
         this.location = location;
+        this.position = position;
 
         this.setMinSize(size, size);
         this.setMaxSize(size, size);
@@ -71,7 +73,40 @@ public class ItemView extends VBox {
                 }
             }
         });
+        this.setOnDragDropped(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                event.consume();
+                Item it = (Item) event.getDragboard().getContent(itemDataFormat);
+                gameEngine.moveItem(it, getItem(), getPosition());
 
+            }
+        });
+
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public Item.Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Item.Location location) {
+        this.location = location;
+    }
+
+    public Item.Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Item.Position position) {
+        this.position = position;
     }
 }
 

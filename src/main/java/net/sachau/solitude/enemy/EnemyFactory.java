@@ -4,13 +4,12 @@ public class EnemyFactory {
 
     public static Enemy create(Enemy.Type type, int y, int x) {
 
-        Enemy enemy = new Enemy(y, x);
+        Enemy enemy;
         switch (type) {
             default:
             case TYPE1: {
-                enemy.setAttack(0);
-                enemy.setDamage(1);
-                enemy.setHits(2);
+                enemy = new Type1(y, x);
+                break;
             }
         }
 

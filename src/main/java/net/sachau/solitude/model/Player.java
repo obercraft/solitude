@@ -6,10 +6,7 @@ import net.sachau.solitude.item.Item;
 import net.sachau.solitude.item.Weapon;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Player implements Serializable {
 
@@ -39,7 +36,7 @@ public class Player implements Serializable {
     private Item left;
     private Item right;
     private Item body;
-    private List<Item> stash = new ArrayList<>();
+    private Set<Item> stash = new HashSet<>();
 
     public Player() {
     }
@@ -116,11 +113,11 @@ public class Player implements Serializable {
         this.right = right;
     }
 
-    public List<Item> getStash() {
+    public Set<Item> getStash() {
         return stash;
     }
 
-    public void setStash(List<Item> stash) {
+    public void setStash(Set<Item> stash) {
         this.stash = stash;
     }
 

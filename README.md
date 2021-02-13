@@ -12,3 +12,5 @@
 * Fire Extinguisher by P Thanga Vignesh from the Noun Project
 * Pistol by pixiodesign from the Noun Project
 * Fist by Dmitry Vasiliev from the Noun Project
+* First Aid by Icon Solid from the Noun Project
+* armor by Igor Esaulov from the Noun Project

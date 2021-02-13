@@ -40,6 +40,14 @@ public class GameboardView extends VBox {
             }
         });
 
+    }
+
+
+    public void update() {
+        missionMapView.update();
+        turnView.update();
+        equipmentView.update();
 
     }
+
 }

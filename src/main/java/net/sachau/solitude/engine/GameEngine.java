@@ -8,9 +8,9 @@ import net.sachau.solitude.card.EventCard;
 import net.sachau.solitude.enemy.Enemy;
 import net.sachau.solitude.enemy.EnemyFactory;
 import net.sachau.solitude.gui.Icons;
-import net.sachau.solitude.item.Armor;
-import net.sachau.solitude.item.Weapon;
+import net.sachau.solitude.item.*;
 import net.sachau.solitude.mission.Mission;
+import net.sachau.solitude.mission.Mission1;
 import net.sachau.solitude.mission.MissionMap;
 import net.sachau.solitude.model.*;
 
@@ -57,6 +57,9 @@ public class GameEngine implements Observer {
     }
 
     public Player getPlayer() {
+        if (gameState == null) {
+            return null;
+        }
         return gameState.getPlayer();
     }
 
@@ -487,6 +490,68 @@ public class GameEngine implements Observer {
     }
 
     public void handleFire() {
+    }
+
+    public void moveItem(Item sourceItem, Item targetItem, Item.Position position) {
+        if (sourceItem == null) {
+            return;
+        } else if (sourceItem.equals(targetItem)) {
+            return;
+        }
+        switch(position) {
+            case BODY: {
+                getPlayer().setBody(sourceItem);
+                if (targetItem != null) {
+                    getPlayer().addStash(targetItem);
+                }
+                getPlayer().getStash().remove(sourceItem);
+                send(Event.UPDATE_EQUIPMENT);
+                return;
+            }
+            case RIGHT_HAND: {
+                getPlayer().setRight(sourceItem);
+                if (targetItem != null) {
+                    getPlayer().addStash(targetItem);
+                }
+                if (sourceItem.equals(getPlayer().getLeft())) {
+                    getPlayer().setLeft(null);
+                }
+                getPlayer().getStash().remove(sourceItem);
+                send(Event.UPDATE_EQUIPMENT);
+                return;
+            }
+            case LEFT_HAND: {
+                getPlayer().setLeft(sourceItem);
+                if (targetItem != null) {
+                    getPlayer().addStash(targetItem);
+                }
+                if (sourceItem.equals(getPlayer().getRight())) {
+                    getPlayer().setRight(null);
+                }
+                getPlayer().getStash().remove(sourceItem);
+                send(Event.UPDATE_EQUIPMENT);
+                return;
+            }
+
+            default:
+                break;
+        }
+
+
+
+    }
+
+    public void startNewGame() {
+                Player player = new Player();
+        player.setHits(Player.MAX_HITS);
+        player.setAmmo(2);
+        player.addStash(new KevlarVest());
+        player.addStash(new Pistol());
+        Mission mission1 = new Mission1();
+        mission1.generateMap(this);
+        mission1.getActionCards().shuffle();
+        GameState gameState = new GameState(player, mission1);
+        setGameState(gameState);
     }
 
     private class EnterResult {

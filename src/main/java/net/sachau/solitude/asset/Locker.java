@@ -17,7 +17,7 @@ public class Locker extends Asset {
         if (gameEngine.getMission().getItemChits().hasChits()) {
             gameEngine.getPlayer().useAction(ActionType.USE);
             gameEngine.getPlayer().getStash().add(gameEngine.getMission().getItemChits().draw());
-            gameEngine.send(Event.PLAYER_UPDATE_ITEMS);
+            gameEngine.send(Event.UPDATE_EQUIPMENT);
         } else {
             gameEngine.sendError("no more items");
         }

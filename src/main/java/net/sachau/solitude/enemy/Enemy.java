@@ -2,7 +2,7 @@ package net.sachau.solitude.enemy;
 
 import net.sachau.solitude.engine.Id;
 
-public class Enemy {
+public abstract class Enemy {
 
     public enum Type {
         TYPE1,

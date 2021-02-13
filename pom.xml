@@ -86,7 +86,7 @@
 
                     <archive>
                         <manifest>
-                            <mainClass>com.capita.europe.utils.KhorosStatisticsApplication</mainClass>
+                            <mainClass>net.sachau.solitude.SolitudeApplication</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
@@ -121,7 +121,7 @@
 
                     <archive>
                         <manifest>
-                            <mainClass>net.sachau.zarrax.MainOld</mainClass>
+                            <mainClass>net.sachau.solitude.SolitudeApplication</mainClass>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>

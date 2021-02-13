@@ -41,11 +41,15 @@ public class MissionMapView extends ScrollPane implements Observer {
         setContent(mapArea);
         this.getStyleClass().add("steel");
         mapArea.getStyleClass().add("steel");
+        gameEngine.addObserver(this);
         update();
     }
     public void update() {
+        Player player = gameEngine.getPlayer();
+        if (player == null) {
+            return;
+        }
 
-        gameEngine.addObserver(this);
         int height = gameEngine.getMissionMap()
                 .getHeight();
         int width = gameEngine.getMissionMap()

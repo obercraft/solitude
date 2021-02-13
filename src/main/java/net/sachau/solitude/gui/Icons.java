@@ -18,9 +18,9 @@ public class Icons {
 
         FIST("/icons/PNG/noun_Fist_3303334.png"),
         PISTOL("/icons/PNG/noun_Pistol_3107615.png"),
-        ARMOR("/icons/PNG/noun_Fire Extinguisher_1711612.png"),
+        ARMOR("/icons/PNG/noun_armor_710826.png"),
 
-        FA_FIRST_AID("/icons/PNG/noun_Fire Extinguisher_1711612.png"),
+        FIRST_AID("/icons/PNG/noun_First Aid_31025.png"),
         ;
 
         private String fileName;

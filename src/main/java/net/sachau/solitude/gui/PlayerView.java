@@ -67,6 +67,9 @@ public class PlayerView extends VBox {
 
     public void update() {
         Player player = gameEngine.getPlayer();
+        if (player == null) {
+            return;
+        }
         value.set(player.getActions() +"@" +player.getTurn());
     }
 }

@@ -8,9 +8,17 @@ import net.sachau.solitude.text.Symbol;
 import javax.swing.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public abstract class Item implements Serializable {
+
+    public enum Position {
+        BODY,
+        LEFT_HAND,
+        RIGHT_HAND,
+        STASH,
+    }
 
     public enum Location {
         BODY,
@@ -22,6 +30,7 @@ public abstract class Item implements Serializable {
     private String name;
     private Icons.Name icon;
     private Set<Location> allowedLocations = new HashSet<>();
+    private Position position;
 
     public Item(String name, Icons.Name icon) {
         this.name = name;
@@ -58,4 +67,28 @@ public abstract class Item implements Serializable {
         return id;
     }
 
+    public void setAllowedLocations(Set<Location> allowedLocations) {
+        this.allowedLocations = allowedLocations;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return id == item.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
