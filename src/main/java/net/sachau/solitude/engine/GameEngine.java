@@ -8,7 +8,6 @@ import net.sachau.solitude.card.EventCard;
 import net.sachau.solitude.enemy.Enemy;
 import net.sachau.solitude.enemy.EnemyFactory;
 import net.sachau.solitude.experience.ExperienceGrid;
-import net.sachau.solitude.gui.Icons;
 import net.sachau.solitude.item.*;
 import net.sachau.solitude.mission.Mission;
 import net.sachau.solitude.mission.Mission1;
@@ -24,11 +23,16 @@ public class GameEngine implements Observer {
 
     private final Events events;
 
+    private final Actions actions;
+
     private GameState gameState;
 
+
+
     @Autowired
-    public GameEngine(Events events) {
+    public GameEngine(Events events, Actions actions) {
         this.events = events;
+        this.actions = actions;
         this.addObserver(this);
     }
 
@@ -300,6 +304,10 @@ public class GameEngine implements Observer {
 
 
     public void attack(Enemy enemy) {
+        actions.attack(gameState.getMission(), gameState.getPlayer(), enemy);
+    }
+
+    public void attackold(Enemy enemy) {
         Player player = getPlayer();
         if (!player.hasActions(ActionType.ATTACK)) {
             sendError("no more actions");
