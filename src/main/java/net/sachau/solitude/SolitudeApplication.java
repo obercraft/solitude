@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 import net.sachau.solitude.engine.Event;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.gui.*;
+import net.sachau.solitude.item.KevlarVest;
+import net.sachau.solitude.item.Pistol;
 import net.sachau.solitude.model.GameState;
 import net.sachau.solitude.mission.Mission1;
 import net.sachau.solitude.mission.Mission;
@@ -24,9 +26,10 @@ public class SolitudeApplication extends Application {
         GameEngine gameEngine = componentManager.getBean(GameEngine.class);
 
         Player player = new Player();
-        player.setHits(5);
+        player.setHits(Player.MAX_HITS);
         player.setAmmo(2);
-        // player.setRight(new Weapon("Pistol", 2,1, 1, true));
+        player.addStash(new KevlarVest());
+        player.addStash(new Pistol());
         Mission mission1 = new Mission1();
         mission1.generateMap(gameEngine);
         mission1.getActionCards().shuffle();

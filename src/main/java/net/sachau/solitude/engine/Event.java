@@ -2,6 +2,7 @@ package net.sachau.solitude.engine;
 
 public enum Event {
     ERROR,
+    MESSAGE,
     NEXT_TURN,
     PLAYER_OPEN_DOOR_DONE,
     PLAYER_USED,

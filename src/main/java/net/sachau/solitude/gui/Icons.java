@@ -16,7 +16,8 @@ public class Icons {
         FIRE("/icons/PNG/noun_Fire_3723257.png"),
         FIRE_EXTINGUISHER("/icons/PNG/noun_Fire Extinguisher_1711612.png"),
 
-        WEAPON("/icons/PNG/noun_Fire Extinguisher_1711612.png"),
+        FIST("/icons/PNG/noun_Fist_3303334.png"),
+        PISTOL("/icons/PNG/noun_Pistol_3107615.png"),
         ARMOR("/icons/PNG/noun_Fire Extinguisher_1711612.png"),
 
         FA_FIRST_AID("/icons/PNG/noun_Fire Extinguisher_1711612.png"),

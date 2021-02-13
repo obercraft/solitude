@@ -1,8 +1,10 @@
 package net.sachau.solitude.gui;
 
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import net.sachau.solitude.enemy.Enemy;
 import net.sachau.solitude.engine.*;
 import net.sachau.solitude.model.*;
@@ -24,9 +26,10 @@ public class MissionMapView extends ScrollPane implements Observer {
     private final PlayerView playerView;
     Map<Long, EnemyNode> enemyViews = new ConcurrentHashMap<>();
 
-    SpaceNode playerLocation;
+    RoomView playerLocation;
 
-    SpaceNode locations[][];
+    RoomView locations[][];
+    DoorView doors[][];
 
     private AnchorPane mapArea = new AnchorPane();
 
@@ -47,7 +50,8 @@ public class MissionMapView extends ScrollPane implements Observer {
                 .getHeight();
         int width = gameEngine.getMissionMap()
                 .getWidth();
-        locations = new SpaceNode[height][width];
+        locations = new RoomView[height][width];
+        doors = new DoorView[height][width];
 
         double offsetTop = 0;
 
@@ -60,12 +64,26 @@ public class MissionMapView extends ScrollPane implements Observer {
                         .getSpace(h, w);
 
                 if (space != null) {
-                    locations[h][w] = new SpaceNode(gameEngine, space);
-                    mapArea.getChildren().add(locations[h][w]);
-                    locations[h][w].relocate(offsetLeft, offsetTop);
-                    offsetLeft += locations[h][w].getMaxWidth();
+                    double maxHeight;
+                    if (space instanceof Room) {
+                        locations[h][w] = new RoomView(gameEngine, (Room) space);
+                        mapArea.getChildren().add(locations[h][w]);
+                        locations[h][w].relocate(offsetLeft, offsetTop);
+                        offsetLeft += locations[h][w].getMaxWidth();
+                        maxHeight = locations[h][w].getMaxHeight();
+
+                    } else if (space instanceof Door) {
+                        doors[h][w] = new DoorView(gameEngine, (Door) space);
+                        mapArea.getChildren().add(doors[h][w]);
+                        doors[h][w].relocate(offsetLeft, offsetTop);
+                        offsetLeft += doors[h][w].getMaxWidth();
+                        maxHeight = doors[h][w].getMaxHeight();
+
+                    } else {
+                        maxHeight = 0;
+                    }
                     if (!space.isBlank()) {
-                        offsetTopIncrease = Math.max(offsetTopIncrease, locations[h][w].getMaxHeight());
+                        offsetTopIncrease = Math.max(offsetTopIncrease, maxHeight);
                     }
                 }
             }
@@ -80,9 +98,9 @@ public class MissionMapView extends ScrollPane implements Observer {
 
         for (Map.Entry<Long, Enemy> enemy : gameEngine.getMission().getEnemies().entrySet()) {
             EnemyNode enemyNode = new EnemyNode(enemy.getValue());
-            locations[enemy.getValue()
+            ((RoomView)locations[enemy.getValue()
                     .getY()][enemy.getValue()
-                    .getX()].addContent(enemyNode);
+                    .getX()]).addContent(enemyNode);
             enemyViews.put(enemy.getKey(), enemyNode);
             enemyNode.update(enemy.getValue());
 
@@ -112,10 +130,10 @@ public class MissionMapView extends ScrollPane implements Observer {
             if (enemy.isCreated()) {
                 ev = new EnemyNode(enemy);
                 enemyViews.put(enemy.getId(), ev);
-                locations[enemy.getY()][enemy.getX()].addContent(ev);
+                ((RoomView) locations[enemy.getY()][enemy.getX()]).addContent(ev);
                 enemy.setCreated(false);
             } else if (enemy.hasMoved()) {
-                locations[enemy.getLastY()][enemy.getLastX()].removeContent(ev);
+                ((RoomView)locations[enemy.getLastY()][enemy.getLastX()]).removeContent(ev);
                 locations[enemy.getY()][enemy.getX()].addContent(ev);
             }
             enemyViews.get(enemy.getId())
@@ -203,7 +221,7 @@ public class MissionMapView extends ScrollPane implements Observer {
             }
             case PLAYER_OPEN_DOOR_DONE: {
                 Door door = Events.getData(Door.class, arg);
-                locations[door.getY()][door.getX()].update(door);
+                doors[door.getY()][door.getX()].update(door);
                 gameEngine.send(Event.PLAYER_UPDATE);
                 return;
             }
@@ -227,7 +245,7 @@ public class MissionMapView extends ScrollPane implements Observer {
 
             case UPDATE_DOOR: {
                 Door door = Events.getData(Door.class, arg);
-                locations[door.getY()][door.getX()].update(door);
+                doors[door.getY()][door.getX()].update(door);
                 gameEngine.send(Event.PLAYER_UPDATE);
                 return;
             }
@@ -250,8 +268,13 @@ public class MissionMapView extends ScrollPane implements Observer {
         Space space = gameEngine.getMissionMap()
                 .getSpace(y, x);
         if (space != null) {
+            if (space instanceof Door) {
+                doors[y][x].update((Door)space);
+            } else if (space instanceof Room) {
+                locations[y][x].update((Room)space);
+            }
             space.setDiscovered(true);
-            locations[y][x].update(space);
+
         }
     }
 
@@ -284,25 +307,4 @@ public class MissionMapView extends ScrollPane implements Observer {
         return y * roomHeight;
     }
 
-
-    class RoomView extends FlowPane {
-
-        private int x, y;
-
-        public int getX() {
-            return x;
-        }
-
-        public void setX(int x) {
-            this.x = x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public void setY(int y) {
-            this.y = y;
-        }
-    }
 }

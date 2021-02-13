@@ -1,21 +1,30 @@
 package net.sachau.solitude.model;
 
 import net.sachau.solitude.item.Armor;
+import net.sachau.solitude.item.Fist;
 import net.sachau.solitude.item.Item;
+import net.sachau.solitude.item.Weapon;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Player implements Serializable {
 
     public static int MAX_ACTIONS = 300;
-    public static int MAX_HITS = 5;
+    public static int MAX_HITS = 1000;
 
     private int turn = 1;
     private int actions = MAX_ACTIONS;
+    private Map<ActionType, Integer> maxAdditionalActions = new HashMap<>();
+    private Map<ActionType, Integer> additionalActions = new HashMap<>();
+
     private int ammo;
     private int y,x;
+
+    private Weapon defaultWeapon = new Fist();
 
     // Skills
     private int weapon;
@@ -23,7 +32,7 @@ public class Player implements Serializable {
     private int stealth;
 
     // hitpoints
-    private int hits;
+    private int hits = MAX_HITS;
     private int mind;
 
     // Items
@@ -123,12 +132,23 @@ public class Player implements Serializable {
         this.actions = actions;
     }
 
-    public boolean hasActions() {
-        return actions > 0;
+    public boolean hasActions(ActionType actionType) {
+        Integer action = additionalActions.get(actionType);
+        if (action != null && action.intValue() > 0) {
+            return true;
+        } else {
+            return actions > 0;
+        }
     }
 
-    public void useAction() {
-        actions --;
+    public void useAction(ActionType actionType) {
+        Integer action = additionalActions.get(actionType);
+        if (action != null && action.intValue() > 0) {
+            int remaining = Math.max(action -1, 0);
+            additionalActions.put(actionType, remaining);
+        } else {
+            actions--;
+        }
     }
 
     public int getAmmo() {
@@ -141,6 +161,9 @@ public class Player implements Serializable {
 
     public void nextTurn() {
         actions = MAX_ACTIONS;
+        for (Map.Entry<ActionType, Integer> entry : maxAdditionalActions.entrySet()) {
+            additionalActions.put(entry.getKey(), entry.getValue());
+        }
         turn ++;
 
     }
@@ -166,5 +189,17 @@ public class Player implements Serializable {
             return (Armor) body;
         }
         return null;
+    }
+
+    public void addStash(Item item) {
+        this.getStash().add(item);
+    }
+
+    public Weapon getDefaultWeapon() {
+        return defaultWeapon;
+    }
+
+    public void setDefaultWeapon(Weapon defaultWeapon) {
+        this.defaultWeapon = defaultWeapon;
     }
 }

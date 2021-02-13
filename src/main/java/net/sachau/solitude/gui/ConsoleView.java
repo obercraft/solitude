@@ -42,6 +42,7 @@ public class ConsoleView extends ScrollPane implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         switch (Events.getType(arg)) {
+            case MESSAGE:
             case ERROR:
                 textFlow.getChildren()
                         .addAll(new Text(Events.getData(String.class, arg) + "\n"));

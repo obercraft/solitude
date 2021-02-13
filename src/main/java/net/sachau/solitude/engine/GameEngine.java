@@ -1,11 +1,13 @@
 package net.sachau.solitude.engine;
 
 import net.sachau.solitude.Logger;
+import net.sachau.solitude.Messages;
 import net.sachau.solitude.asset.Asset;
 import net.sachau.solitude.card.ActionCard;
 import net.sachau.solitude.card.EventCard;
 import net.sachau.solitude.enemy.Enemy;
 import net.sachau.solitude.enemy.EnemyFactory;
+import net.sachau.solitude.gui.Icons;
 import net.sachau.solitude.item.Armor;
 import net.sachau.solitude.item.Weapon;
 import net.sachau.solitude.mission.Mission;
@@ -35,6 +37,11 @@ public class GameEngine implements Observer {
     public void sendError(String message) {
         events.send(new EventContainer(Event.ERROR, message));
     }
+
+    public void sendMessage(String message) {
+        events.send(new EventContainer(Event.MESSAGE, Messages.get(message)));
+    }
+
 
     public void send(Event event, Object object) {
         events.send(new EventContainer(event, object));
@@ -146,7 +153,7 @@ public class GameEngine implements Observer {
             return;
         }
         Player player = getPlayer();
-        if (!player.hasActions()) {
+        if (!player.hasActions(ActionType.USE)) {
             sendError("no action left");
             return;
         }
@@ -165,7 +172,7 @@ public class GameEngine implements Observer {
             sendError("door is already open");
             return;
         } else {
-            player.useAction();
+            player.useAction(ActionType.USE);
             targetDoor.setClosed(false);
             send(Event.PLAYER_OPEN_DOOR_DONE, targetDoor);
         }
@@ -174,7 +181,7 @@ public class GameEngine implements Observer {
     public void moveTo(Space space) {
 
         Player player = getPlayer();
-        if (!player.hasActions()) {
+        if (!player.hasActions(ActionType.MOVE)) {
             sendError("no actions left");
             return;
         }
@@ -202,7 +209,7 @@ public class GameEngine implements Observer {
 
             player.setX(space.getX());
             player.setY(space.getY());
-            player.useAction();
+            player.useAction(ActionType.MOVE);
 
             if (space.getEventCard() != null) {
                 EventCard eventCard = space.getEventCard();
@@ -290,7 +297,7 @@ public class GameEngine implements Observer {
 
     public void attack(Enemy enemy) {
         Player player = getPlayer();
-        if (!player.hasActions()) {
+        if (!player.hasActions(ActionType.ATTACK)) {
             sendError("no more actions");
             return;
         }
@@ -300,9 +307,7 @@ public class GameEngine implements Observer {
         } else if (player.getLeft() != null && player.getLeft() instanceof Weapon) {
             weapon =(Weapon) player.getLeft();
         } else {
-            weapon = new Weapon("Fist", 1, 1, false) {
-
-            };
+            weapon = player.getDefaultWeapon();
         }
         Distance distance = getMissionMap().calculateDistance(player.getY(), player.getX(), enemy.getY(), enemy.getX());
         if (distance.isBlocked()) {
@@ -319,7 +324,7 @@ public class GameEngine implements Observer {
         }
 
         int skill = player.getWeapon() + 1;
-        player.useAction();
+        player.useAction(ActionType.ATTACK);
         int result = 0;
         int ammo = 0;
         for (int i = 0; i < skill; i++) {
@@ -356,7 +361,7 @@ public class GameEngine implements Observer {
 
     public void use(Room room, Asset asset) {
         Player player = getPlayer();
-        if (!player.hasActions()) {
+        if (!player.hasActions(ActionType.USE)) {
             sendError("no more actions");
             return;
         }

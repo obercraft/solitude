@@ -1,10 +1,7 @@
 package net.sachau.solitude.gui;
 
-import javafx.geometry.Insets;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import net.sachau.solitude.engine.Autowired;
 import net.sachau.solitude.engine.Event;
 import net.sachau.solitude.engine.GameEngine;
@@ -17,21 +14,21 @@ public class GameboardView extends VBox {
     private final ConsoleView consoleView;
     private final MissionMapView missionMapView;
     private final TurnView turnView;
-    private final ItemView itemView;
+    private final EquipmentView equipmentView;
 
     @Autowired
-    public GameboardView(GameEngine gameEngine, ConsoleView consoleView, MissionMapView missionMapView, TurnView turnView, ItemView itemView) {
+    public GameboardView(GameEngine gameEngine, ConsoleView consoleView, MissionMapView missionMapView, TurnView turnView, EquipmentView equipmentView) {
         super();
         this.gameEngine = gameEngine;
         this.consoleView = consoleView;
         this.missionMapView = missionMapView;
         this.turnView = turnView;
-        this.itemView = itemView;
+        this.equipmentView = equipmentView;
         this.getStyleClass().add("steel");
 
 
         HBox box2 = new HBox();
-        box2.getChildren().addAll(this.missionMapView, this.itemView);
+        box2.getChildren().addAll(this.missionMapView, this.equipmentView);
 
 
         getChildren().addAll(box2, this.turnView, this.consoleView);

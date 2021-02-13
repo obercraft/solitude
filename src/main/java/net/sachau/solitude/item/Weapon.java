@@ -10,8 +10,8 @@ public abstract class Weapon extends Item {
     private int range;
     private boolean usesAmmo;
 
-    public Weapon(String name, int damage, int range, boolean usesAmmo) {
-        super(name, Icons.Name.WEAPON);
+    public Weapon(String name, Icons.Name iconName, int damage, int range, boolean usesAmmo) {
+        super(name, iconName);
         this.damage = damage;
         this.range = range;
         this.usesAmmo = usesAmmo;

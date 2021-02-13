@@ -3,10 +3,10 @@ package net.sachau.solitude.item;
 import net.sachau.solitude.Messages;
 import net.sachau.solitude.gui.Icons;
 
-public class Pistol extends Weapon {
+public class Fist extends Weapon {
 
-    public Pistol() {
-        super(Messages.get("item.pistol"), Icons.Name.PISTOL, 2,  1, true);
+    public Fist() {
+        super(Messages.get("item.pistol"), Icons.Name.FIST, 1,  0, false);
         addAllowLocation(Location.HAND);
     }
 }

@@ -23,7 +23,7 @@ public class Burning extends Asset {
         if (player.getY() == getSpace().getY() && player.getX() == getSpace().getX()) {
             int remainingHits = Math.max(player.getHits() -1, 0);
             player.setHits(remainingHits);
-            gameEngine.sendError("Fire!");
+            gameEngine.sendMessage("message.fire");
         }
     }
 }

@@ -10,3 +10,11 @@
 .steel {
     -fx-background-color: #43464B;
 }
+
+.black {
+    -fx-background-color: #000000;
+}
+
+.border {
+    -fx-border-color: #FFFFFF;
+}

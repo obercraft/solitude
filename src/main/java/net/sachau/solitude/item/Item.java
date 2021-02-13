@@ -1,6 +1,7 @@
 package net.sachau.solitude.item;
 
 import net.sachau.solitude.engine.GameEngine;
+import net.sachau.solitude.engine.Id;
 import net.sachau.solitude.gui.Icons;
 import net.sachau.solitude.text.Symbol;
 
@@ -17,7 +18,7 @@ public abstract class Item implements Serializable {
         BOTH_HANDS,
         STASH,
     }
-
+    private long id = Id.get();
     private String name;
     private Icons.Name icon;
     private Set<Location> allowedLocations = new HashSet<>();
@@ -52,4 +53,9 @@ public abstract class Item implements Serializable {
     public void addAllowLocation(Location location) {
         allowedLocations.add(location);
     }
+
+    public long getId() {
+        return id;
+    }
+
 }
