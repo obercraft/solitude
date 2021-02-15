@@ -3,6 +3,8 @@ package net.sachau.solitude.engine;
 import net.sachau.solitude.Logger;
 import net.sachau.solitude.Messages;
 import net.sachau.solitude.asset.Asset;
+import net.sachau.solitude.campaign.Campaign;
+import net.sachau.solitude.campaign.SolitudeCampaign;
 import net.sachau.solitude.card.ActionCard;
 import net.sachau.solitude.card.EventCard;
 import net.sachau.solitude.enemy.Enemy;
@@ -30,9 +32,9 @@ public class GameEngine implements Observer {
 
 
     @Autowired
-    public GameEngine(Events events, Actions actions) {
+    public GameEngine(Events events) {
         this.events = events;
-        this.actions = actions;
+        this.actions = new Actions(this, events);
         this.addObserver(this);
     }
 
@@ -47,11 +49,9 @@ public class GameEngine implements Observer {
         events.send(new EventContainer(Event.MESSAGE, Messages.get(message)));
     }
 
-
     public void send(Event event, Object object) {
         events.send(new EventContainer(event, object));
     }
-
 
     public GameState getGameState() {
         return gameState;
@@ -186,205 +186,17 @@ public class GameEngine implements Observer {
         }
     }
 
-    public void moveTo(Space space) {
-
-        Player player = getPlayer();
-        if (!player.hasActions(ActionType.MOVE)) {
-            sendError("no actions left");
-            return;
-        }
-        Distance distance = getMissionMap().calculateDistance(player.getY(), player.getX(), space.getY(), space.getX());
-        if (distance.isDiagonal()) {
-            sendError("diagonal not possible");
-            return;
-        } else if (distance.isBlocked()) {
-            sendError("blocked way");
-            return;
-
-        } else if (distance.getRooms() > 1) {
-            sendError("move only one room");
-            return;
-        } else {
-            // ok moving is allowed
-
-            // check for attacks by enemies
-            for (Enemy enemy : getMission().getEnemies().values()) {
-                if (enemy.getY() == player.getY() && enemy.getX() == player.getX()) {
-                    sendError("OPP ATTACK!");
-                    enemyAttacksPlayer(enemy);
-                }
-            }
-
-            player.setX(space.getX());
-            player.setY(space.getY());
-            player.useAction(ActionType.MOVE);
-
-            if (space.getEventCard() != null) {
-                EventCard eventCard = space.getEventCard();
-                eventCard.execute(this);
-                space.setEventCard(null);
-            }
-
-            int stealth = player.getSkill(Skill.STEALTH);
-            int stealthResult = getMission().drawResult(stealth);
-
-            for (Enemy enemy : getMission().getEnemies().values()) {
-                Distance d = getMissionMap().calculateDistance(player.getY(), player.getX(), enemy.getY(), enemy.getX());
-                if (d.getRooms() == 0) {
-                    enemy.setRevealed(true);
-                    enemy.setAlerted(true);
-                    enemyAttacksPlayer(enemy);
-                } else if (d.getRooms() > stealthResult) {
-                    enemy.setAlerted(true);
-                }
-            }
-
-
-            send(Event.PLAYER_MOVE_DONE);
-        }
+    public void use(Room room, Asset asset) {
+        actions.use(room, asset);
     }
 
-    private void enemyAttacksPlayer(Enemy enemy) {
-        Player player = getPlayer();
-        int attackSkill = 1 + enemy.getAttack();
-        int result = getMission().drawResult(attackSkill);
-        if (result > 0) {
-            int damage = enemy.getDamage();
-            Armor armor = player.getArmor();
-            if (armor != null) {
-                
-            }
-            player.setHits(Math.max(0, player.getHits() - damage));
-            sendError("enemy hits for " + enemy.getDamage());
-        } else {
-            sendError("enemy misses");
-        }
-        if (player.getHits() <=0) {
-            sendError("player died");
-            send(Event.PLAYER_DIED);
-        }
-    }
-
-    public boolean offsetCheckDoor(int yOffset, int xOffset) {
-
-        if (yOffset == 0 && xOffset == 0) {
-            return true;
-        }
-        if (yOffset != 0 && xOffset != 0) {
-            sendError("diagonal not possible");
-            return false;
-        }
-        if (Math.abs(yOffset) != 1 && Math.abs(xOffset) != 1) {
-            sendError("door only 1 room away");
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-
-    public boolean offsetCheck(int yOffset, int xOffset) {
-        if (yOffset != 0 && xOffset != 0) {
-            sendError("diagonal not possible");
-            return false;
-        }
-        if (Math.abs(yOffset) != 1 && Math.abs(xOffset) != 1) {
-            sendError("only 1 room move");
-            return false;
-        }
-        Player player = getPlayer();
-        MissionMap missionMap = getMissionMap();
-        if (player.getX() + xOffset <0 || player.getX() + xOffset >= missionMap.getWidth() || player.getY() + yOffset <0 || player.getY() + yOffset >= missionMap.getHeight()) {
-            sendError("map-border reached");
-            return false;
-        } else {
-            return true;
-        }
+    public void moveTo(Space room) {
+        actions.moveTo(room);
     }
 
 
     public void attack(Enemy enemy) {
-        actions.attack(gameState.getMission(), gameState.getPlayer(), enemy);
-    }
-
-    public void attackold(Enemy enemy) {
-        Player player = getPlayer();
-        if (!player.hasActions(ActionType.ATTACK)) {
-            sendError("no more actions");
-            return;
-        }
-        Weapon weapon;
-        if (player.getRight() != null && player.getRight() instanceof Weapon) {
-            weapon =(Weapon) player.getRight();
-        } else if (player.getLeft() != null && player.getLeft() instanceof Weapon) {
-            weapon =(Weapon) player.getLeft();
-        } else {
-            weapon = player.getDefaultWeapon();
-        }
-        Distance distance = getMissionMap().calculateDistance(player.getY(), player.getX(), enemy.getY(), enemy.getX());
-        if (distance.isBlocked()) {
-            sendError("blocked way");
-            return;
-        } else if (distance.getRooms() > weapon.getRange()) {
-            sendError("too far away");
-            return;
-        } else if (weapon.isUsesAmmo() && player.getAmmo() <=0) {
-            sendError("no ammo");
-            return;
-        } else {
-            weapon.getDamage();
-        }
-
-        int skill = player.getSkill(Skill.ATTACK);
-        player.useAction(ActionType.ATTACK);
-        int result = 0;
-        int ammo = 0;
-        for (int i = 0; i < skill; i++) {
-            ActionCard actionCard = getMission().getActionCards().draw();
-            result += actionCard.getSuccesses();
-            // ammo += actionCard.getAmmo();
-        }
-
-        if (distance.getRooms() > 1) {
-            result --;
-        }
-
-        if (!enemy.isRevealed()) {
-            result --;
-        }
-
-        if (result <= 0) {
-            sendError("missed");
-            send(Event.PLAYER_ATTACK_DONE, enemy);
-            return;
-        }
-
-        if (weapon.isUsesAmmo()) {
-            int remainingAmmo = Math.max(0, player.getAmmo() - ammo);
-            player.setAmmo( remainingAmmo);
-        }
-
-        int remainingHits = Math.max(0, enemy.getHits() - weapon.getDamage());
-        enemy.setHits(remainingHits);
-
-        send(Event.PLAYER_ATTACK_DONE, enemy);
-
-    }
-
-    public void use(Room room, Asset asset) {
-        Player player = getPlayer();
-        if (!player.hasActions(ActionType.USE)) {
-            sendError("no more actions");
-            return;
-        }
-        Distance distance = getMissionMap().calculateDistance(player.getY(), player.getX(), room.getY(), room.getX());
-        if (distance.getRooms() > 0) {
-            sendError("too far away");
-            return;
-        }
-        sendError("used " + asset.getName());
-        asset.use(this);
-
+        actions.attack(enemy);
     }
 
     public void enemyActivation() {
@@ -415,7 +227,7 @@ public class GameEngine implements Observer {
             }
             distance = getMissionMap().calculateDistance(player.getY(), player.getX(), enemy.getY(), enemy.getX());
             if (distance.getRooms() == 0) {
-                enemyAttacksPlayer(enemy);
+                actions.enemyAttacksPlayer(enemy);
             }
 
         }
@@ -510,8 +322,14 @@ public class GameEngine implements Observer {
         switch(position) {
             case BODY: {
                 getPlayer().setBody(sourceItem);
+                if (sourceItem instanceof Wieldable) {
+                    ((Wieldable) sourceItem).wield(this);
+                }
                 if (targetItem != null) {
                     getPlayer().addStash(targetItem);
+                    if (sourceItem instanceof Wieldable) {
+                        ((Wieldable) targetItem).unwield(this);
+                    }
                 }
                 getPlayer().getStash().remove(sourceItem);
                 send(Event.UPDATE_EQUIPMENT);
@@ -519,8 +337,15 @@ public class GameEngine implements Observer {
             }
             case RIGHT_HAND: {
                 getPlayer().setRight(sourceItem);
+                if (sourceItem instanceof Wieldable) {
+                    ((Wieldable) sourceItem).wield(this);
+                }
                 if (targetItem != null) {
                     getPlayer().addStash(targetItem);
+                    if (sourceItem instanceof Wieldable) {
+                        ((Wieldable) targetItem).unwield(this);
+                    }
+
                 }
                 if (sourceItem.equals(getPlayer().getLeft())) {
                     getPlayer().setLeft(null);
@@ -531,8 +356,15 @@ public class GameEngine implements Observer {
             }
             case LEFT_HAND: {
                 getPlayer().setLeft(sourceItem);
+                if (sourceItem instanceof Wieldable) {
+                    ((Wieldable) sourceItem).wield(this);
+                }
                 if (targetItem != null) {
                     getPlayer().addStash(targetItem);
+                    if (sourceItem instanceof Wieldable) {
+                        ((Wieldable) targetItem).unwield(this);
+                    }
+
                 }
                 if (sourceItem.equals(getPlayer().getRight())) {
                     getPlayer().setRight(null);
@@ -556,17 +388,20 @@ public class GameEngine implements Observer {
         player.setAmmo(2);
         player.addStash(new KevlarVest());
         player.addStash(new Pistol());
+        Campaign solitudeCampaign  = new SolitudeCampaign();
         Mission mission1 = new Mission1();
         mission1.generateMap(this);
         mission1.getActionCards().shuffle();
-        GameState gameState = new GameState(player, mission1);
+        GameState gameState = new GameState(player, mission1, solitudeCampaign);
         setGameState(gameState);
     }
 
     public void updateExperience(ExperienceGrid experienceGrid) {
-        getPlayer().setSkills(experienceGrid.getIncreasedSkills());
+        getPlayer().setAttributes(experienceGrid.getIncreasedAttributes());
         send(Event.START_MISSION);
     }
+
+
 
     private class EnterResult {
         boolean doorOpened;

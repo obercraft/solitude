@@ -1,5 +1,6 @@
 package net.sachau.solitude.gui;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -7,20 +8,23 @@ import net.sachau.solitude.ComponentManager;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.enemy.Enemy;
 
-public class EnemyNode extends StackPane {
+public class EnemyView extends StackPane {
 
-    private static int size = 40;
+    private static int size = 60;
     Text text = new Text();
     Enemy enemy;
 
-    public EnemyNode(Enemy enemy) {
+    public EnemyView(Enemy enemy) {
         super();
         this.setHeight(size);
         this.setWidth(size);
         this.setMinSize(size, size);
         this.setMaxSize(size, size);
 
-        getChildren().add(text);
+        ImageView imageView = new ImageView(Icons.get(enemy.getIcon()));
+        imageView.setFitWidth(size);
+        imageView.setFitHeight(size);
+        getChildren().add(imageView);
         update(enemy);
 
         setOnMouseClicked(event -> {

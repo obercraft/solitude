@@ -37,6 +37,7 @@ public class Deck<CARD extends Card> {
         if (this.drawPile.size() > 0) {
             CARD drawnCard = this.drawPile.remove(0);
             this.discardPile.add(drawnCard);
+
             return drawnCard;
         } else {
             shuffle();

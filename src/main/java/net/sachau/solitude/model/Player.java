@@ -4,6 +4,7 @@ import net.sachau.solitude.item.Armor;
 import net.sachau.solitude.item.Fist;
 import net.sachau.solitude.item.Item;
 import net.sachau.solitude.item.Weapon;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.Serializable;
 import java.util.*;
@@ -23,11 +24,8 @@ public class Player implements Serializable {
 
     private Weapon defaultWeapon = new Fist();
 
-    private Map<Skill, Integer> skills = new HashMap<>();
-
-    // hitpoints
-    private int hits = MAX_HITS;
-    private int mind;
+    private Map<Attribute, Integer> attributes = new HashMap<>();
+    private Map<Attribute, Integer> attributesBonus = new HashMap<>();
 
     // Items
     private Item left;
@@ -55,19 +53,11 @@ public class Player implements Serializable {
     }
 
     public int getHits() {
-        return hits;
+        return getAttribute(Attribute.HITS);
     }
 
     public void setHits(int hits) {
-        this.hits = hits;
-    }
-
-    public int getMind() {
-        return mind;
-    }
-
-    public void setMind(int mind) {
-        this.mind = mind;
+        attributes.put(Attribute.HITS, hits);
     }
 
     public Item getLeft() {
@@ -173,15 +163,33 @@ public class Player implements Serializable {
         this.defaultWeapon = defaultWeapon;
     }
 
-    public Map<Skill, Integer> getSkills() {
-        return skills;
+    public Map<Attribute, Integer> getAttributes() {
+        return attributes;
     }
 
-    public void setSkills(Map<Skill, Integer> skills) {
-        this.skills = skills;
+    public void setAttributes(Map<Attribute, Integer> attributes) {
+        this.attributes = attributes;
     }
-    public int getSkill(Skill skill) {
-        Integer skillValue = skills.get(skill);
-        return skillValue != null ? skillValue.intValue() : 1;
+    public int getAttribute(Attribute attribute) {
+        Integer skillValue = attributes.get(attribute);
+        Integer aBonus = attributesBonus.get(attribute);
+        int bonus = aBonus != null ? aBonus.intValue() : 0;
+        return bonus + (skillValue != null ? skillValue.intValue() : 1);
+
     }
+
+    public Map<Attribute, Integer> getAttributesBonus() {
+        return attributesBonus;
+    }
+
+    public void setAttributesBonus(Map<Attribute, Integer> attributesBonus) {
+        this.attributesBonus = attributesBonus;
+    }
+
+    public void addBonus(Attribute attribute, int value) {
+        Integer currentBonus = attributesBonus.get(attribute);
+        int bonus = value + (currentBonus != null ? currentBonus.intValue() : 0);
+        attributesBonus.put(attribute, bonus);
+    }
+
 }

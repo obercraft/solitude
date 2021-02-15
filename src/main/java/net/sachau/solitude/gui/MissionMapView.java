@@ -1,10 +1,7 @@
 package net.sachau.solitude.gui;
 
-import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
 import net.sachau.solitude.enemy.Enemy;
 import net.sachau.solitude.engine.*;
 import net.sachau.solitude.model.*;
@@ -24,7 +21,7 @@ public class MissionMapView extends ScrollPane implements Observer {
     private final GameEngine gameEngine;
 
     private final PlayerView playerView;
-    Map<Long, EnemyNode> enemyViews = new ConcurrentHashMap<>();
+    Map<Long, EnemyView> enemyViews = new ConcurrentHashMap<>();
 
     RoomView playerLocation;
 
@@ -101,12 +98,12 @@ public class MissionMapView extends ScrollPane implements Observer {
         gameEngine.getPlayer().setX(gameEngine.getMission().startingPosition().getX());
 
         for (Map.Entry<Long, Enemy> enemy : gameEngine.getMission().getEnemies().entrySet()) {
-            EnemyNode enemyNode = new EnemyNode(enemy.getValue());
+            EnemyView enemyView = new EnemyView(enemy.getValue());
             ((RoomView)locations[enemy.getValue()
                     .getY()][enemy.getValue()
-                    .getX()]).addContent(enemyNode);
-            enemyViews.put(enemy.getKey(), enemyNode);
-            enemyNode.update(enemy.getValue());
+                    .getX()]).addContent(enemyView);
+            enemyViews.put(enemy.getKey(), enemyView);
+            enemyView.update(enemy.getValue());
 
         }
 
@@ -130,9 +127,9 @@ public class MissionMapView extends ScrollPane implements Observer {
             if (enemy.getX() == x && enemy.getY() == y) {
                 enemy.setRevealed(true);
             }
-            EnemyNode ev = enemyViews.get(enemy.getId());
+            EnemyView ev = enemyViews.get(enemy.getId());
             if (enemy.isCreated()) {
-                ev = new EnemyNode(enemy);
+                ev = new EnemyView(enemy);
                 enemyViews.put(enemy.getId(), ev);
                 ((RoomView) locations[enemy.getY()][enemy.getX()]).addContent(ev);
                 enemy.setCreated(false);
@@ -213,7 +210,7 @@ public class MissionMapView extends ScrollPane implements Observer {
                 enemyViews.get(enemy.getId())
                         .update(enemy);
                 if (enemy.getHits() <= 0) {
-                    EnemyNode ev = enemyViews.remove(enemy.getId());
+                    EnemyView ev = enemyViews.remove(enemy.getId());
                     locations[enemy.getY()][enemy.getX()].removeContent(ev);
                     enemyViews.remove(enemy.getId());
                     gameEngine.getMission()

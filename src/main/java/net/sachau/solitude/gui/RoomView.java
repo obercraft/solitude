@@ -100,8 +100,6 @@ public class RoomView extends VBox {
             @Override
             public void handle(DragEvent event) {
                 event.consume();
-                GameEngine gameEngine = ComponentManager.getInstance()
-                        .getBean(GameEngine.class);
                 gameEngine.moveTo(getRoom());
             }
         });

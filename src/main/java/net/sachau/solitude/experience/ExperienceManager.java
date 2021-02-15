@@ -3,7 +3,7 @@ package net.sachau.solitude.experience;
 import net.sachau.solitude.engine.Autowired;
 import net.sachau.solitude.engine.Component;
 import net.sachau.solitude.engine.GameEngine;
-import net.sachau.solitude.model.Skill;
+import net.sachau.solitude.model.Attribute;
 
 @Component
 public class ExperienceManager {
@@ -25,25 +25,25 @@ public class ExperienceManager {
         return experienceGrid;
     }
 
-    public void increase(Skill skill) {
-        this.experienceGrid.increaseSkill(skill);
+    public void increase(Attribute attribute) {
+        this.experienceGrid.increaseSkill(attribute);
     }
 
-    public void decrease(Skill skill) {
-        this.experienceGrid.decreaseSkill(skill);
+    public void decrease(Attribute attribute) {
+        this.experienceGrid.decreaseSkill(attribute);
     }
 
-    public Integer getValue(Skill skill) {
-        return this.experienceGrid.getIncreasedSkills().get(skill);
+    public Integer getValue(Attribute attribute) {
+        return this.experienceGrid.getIncreasedAttributes().get(attribute);
     }
 
 
-    public boolean increaseAllowed(Skill skill) {
-        return this.experienceGrid.increaseAllowed(skill);
+    public boolean increaseAllowed(Attribute attribute) {
+        return this.experienceGrid.increaseAllowed(attribute);
     }
 
-    public boolean decreaseAllowed(Skill skill) {
-        return this.experienceGrid.decreaseAllowed(skill);
+    public boolean decreaseAllowed(Attribute attribute) {
+        return this.experienceGrid.decreaseAllowed(attribute);
     }
 
     public int getAvailableExperience() {

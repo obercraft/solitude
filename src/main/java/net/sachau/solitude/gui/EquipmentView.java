@@ -5,8 +5,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import net.sachau.solitude.engine.*;
 import net.sachau.solitude.item.Item;
+import net.sachau.solitude.model.Attribute;
 import net.sachau.solitude.model.Player;
-import net.sachau.solitude.model.Skill;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -54,9 +54,9 @@ public class EquipmentView extends VBox implements Observer {
             stash.getChildren().add(new ItemView(gameEngine, Item.Location.STASH, null, item));
         }
         skills.getChildren().clear();
-        for (Skill skill : Skill.values()) {
+        for (Attribute attribute : Attribute.values()) {
             HBox skillRow = new HBox();
-            Text text = new Text(skill.getName() + ": " + gameEngine.getPlayer().getSkill(skill));
+            Text text = new Text(attribute.getName() + ": " + gameEngine.getPlayer().getAttribute(attribute));
             text.setFill(Color.WHITE);
             skillRow.getChildren().add(text);
             skills.getChildren().add(skillRow);

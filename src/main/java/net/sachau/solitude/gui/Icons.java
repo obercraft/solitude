@@ -21,7 +21,7 @@ public class Icons {
         ARMOR("/icons/PNG/noun_armor_710826.png"),
 
         FIRST_AID("/icons/PNG/noun_First Aid_31025.png"),
-        ;
+        TYPE1("/icons/PNG/noun_alien_1587501.png");
 
         private String fileName;
 

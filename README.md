@@ -14,3 +14,4 @@
 * Fist by Dmitry Vasiliev from the Noun Project
 * First Aid by Icon Solid from the Noun Project
 * armor by Igor Esaulov from the Noun Project
+* alien by rayhan maulana rikzan from the Noun Project

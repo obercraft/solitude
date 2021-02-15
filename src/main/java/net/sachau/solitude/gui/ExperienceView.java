@@ -9,7 +9,7 @@ import net.sachau.solitude.engine.Autowired;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.engine.View;
 import net.sachau.solitude.experience.ExperienceManager;
-import net.sachau.solitude.model.Skill;
+import net.sachau.solitude.model.Attribute;
 
 @View
 public class ExperienceView extends VBox {
@@ -35,8 +35,8 @@ public class ExperienceView extends VBox {
         experienceManager.init();
         getChildren().clear();
         getChildren().add(available);
-        for (Skill skill : Skill.values()) {
-            getChildren().add(new SkillRowView(available, skill));
+        for (Attribute attribute : Attribute.values()) {
+            getChildren().add(new SkillRowView(available, attribute));
         }
         getChildren().add(done);
 
@@ -49,29 +49,29 @@ public class ExperienceView extends VBox {
         Text skillValue = new Text();
         Button increase = new Button("+");
         Button decrease = new Button("-");
-        private Skill skill;
-        SkillRowView(Text available, Skill skill) {
-            this.skill = skill;
+        private Attribute attribute;
+        SkillRowView(Text available, Attribute attribute) {
+            this.attribute = attribute;
             updateRow();
             getChildren().addAll(skillName, skillValue, increase, decrease);
 
             increase.setOnMouseClicked(event -> {
                 event.consume();
-                experienceManager.increase(this.skill);
+                experienceManager.increase(this.attribute);
                 updateRow();
             });
 
             decrease.setOnMouseClicked(event -> {
                 event.consume();
-                experienceManager.decrease(this.skill);
+                experienceManager.decrease(this.attribute);
                 updateRow();
             });
 
         }
 
         private void updateRow() {
-            skillName.setText(skill.getName());
-            skillValue.setText("" + experienceManager.getValue(skill));
+            skillName.setText(attribute.getName());
+            skillValue.setText("" + experienceManager.getValue(attribute));
             //increase.setDisable(!experienceManager.increaseAllowed(skill));
             //decrease.setDisable(!experienceManager.decreaseAllowed(skill));
             available.setText("" + experienceManager.getAvailableExperience());
