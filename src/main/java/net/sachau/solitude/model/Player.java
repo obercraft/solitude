@@ -1,15 +1,15 @@
 package net.sachau.solitude.model;
 
+import net.sachau.solitude.view.Icons;
 import net.sachau.solitude.item.Armor;
 import net.sachau.solitude.item.Fist;
 import net.sachau.solitude.item.Item;
 import net.sachau.solitude.item.Weapon;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.Serializable;
 import java.util.*;
 
-public class Player implements Serializable {
+public class Player implements Serializable, Counter {
 
     public static int MAX_ACTIONS = 300;
     public static int MAX_HITS = 1000;
@@ -28,8 +28,8 @@ public class Player implements Serializable {
     private Map<Attribute, Integer> attributesBonus = new HashMap<>();
 
     // Items
-    private Item left;
-    private Item right;
+    private Item hands;
+    private Item feet;
     private Item body;
     private Set<Item> stash = new HashSet<>();
 
@@ -60,20 +60,20 @@ public class Player implements Serializable {
         attributes.put(Attribute.HITS, hits);
     }
 
-    public Item getLeft() {
-        return left;
+    public Item getHands() {
+        return hands;
     }
 
-    public void setLeft(Item left) {
-        this.left = left;
+    public void setHands(Item hands) {
+        this.hands = hands;
     }
 
-    public Item getRight() {
-        return right;
+    public Item getFeet() {
+        return feet;
     }
 
-    public void setRight(Item right) {
-        this.right = right;
+    public void setFeet(Item feet) {
+        this.feet = feet;
     }
 
     public Set<Item> getStash() {
@@ -192,4 +192,13 @@ public class Player implements Serializable {
         attributesBonus.put(attribute, bonus);
     }
 
+    @Override
+    public Icons.Name getIcon() {
+        return Icons.Name.PLAYER;
+    }
+
+    @Override
+    public String getStatString() {
+        return "Player";
+    }
 }

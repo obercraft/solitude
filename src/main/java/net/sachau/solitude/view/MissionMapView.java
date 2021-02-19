@@ -1,10 +1,14 @@
-package net.sachau.solitude.gui;
+package net.sachau.solitude.view;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import net.sachau.solitude.enemy.Enemy;
 import net.sachau.solitude.engine.*;
 import net.sachau.solitude.model.*;
+import net.sachau.solitude.view.counter.EnemyView;
+import net.sachau.solitude.view.counter.PlayerView;
+import net.sachau.solitude.view.space.DoorView;
+import net.sachau.solitude.view.space.RoomView;
 
 import java.util.Map;
 import java.util.Observable;
@@ -234,7 +238,7 @@ public class MissionMapView extends ScrollPane implements Observer {
             }
 
             case PLAYER_UPDATE: {
-                playerView.update();
+                playerView.update(gameEngine.getPlayer());
                 gameEngine.send(Event.STATUS_BAR_UPDATE);
                 return;
             }

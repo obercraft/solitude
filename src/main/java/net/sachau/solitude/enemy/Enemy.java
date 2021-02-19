@@ -1,9 +1,10 @@
 package net.sachau.solitude.enemy;
 
 import net.sachau.solitude.engine.Id;
-import net.sachau.solitude.gui.Icons;
+import net.sachau.solitude.view.Icons;
+import net.sachau.solitude.model.Counter;
 
-public abstract class Enemy {
+public abstract class Enemy implements Counter {
 
     public enum Type {
         TYPE1,

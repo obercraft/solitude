@@ -2,10 +2,8 @@ package net.sachau.solitude.item;
 
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.engine.Id;
-import net.sachau.solitude.gui.Icons;
-import net.sachau.solitude.text.Symbol;
+import net.sachau.solitude.view.Icons;
 
-import javax.swing.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -13,24 +11,17 @@ import java.util.Set;
 
 public abstract class Item implements Serializable {
 
-    public enum Position {
-        BODY,
-        LEFT_HAND,
-        RIGHT_HAND,
-        STASH,
-    }
 
     public enum Location {
         BODY,
-        HAND,
-        BOTH_HANDS,
+        HANDS,
+        FEET,
         STASH,
     }
     private long id = Id.get();
     private String name;
     private Icons.Name icon;
     private Set<Location> allowedLocations = new HashSet<>();
-    private Position position;
 
     public Item(String name, Icons.Name icon) {
         this.name = name;
@@ -69,14 +60,6 @@ public abstract class Item implements Serializable {
 
     public void setAllowedLocations(Set<Location> allowedLocations) {
         this.allowedLocations = allowedLocations;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
     }
 
     @Override

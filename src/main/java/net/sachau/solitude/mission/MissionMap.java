@@ -47,7 +47,7 @@ public class MissionMap implements Serializable {
     }
 
     public Distance calculateDistance(int sourceY, int sourceX, int targetY, int targetX) {
-        int roomCount = 0;
+        int roomCount = -1;
         boolean blocked = false;
 
         int b = Math.abs(targetY - sourceY);
@@ -58,7 +58,7 @@ public class MissionMap implements Serializable {
         if (sourceX == targetX) {
             int start = Math.min(sourceY, targetY);
             int end = Math.max(sourceY, targetY);
-            for (int y = start + 1; y <= end; y++) {
+            for (int y = start; y <= end; y++) {
                 Space space = spaces[y][sourceX];
                 if (space != null) {
                     roomCount += space instanceof Room ? 1 : 0;
@@ -70,7 +70,7 @@ public class MissionMap implements Serializable {
         } else if (sourceY == targetY) {
             int start = Math.min(sourceX, targetX);
             int end = Math.max(sourceX, targetX);
-            for (int x = start + 1; x <= end; x++) {
+            for (int x = start; x <= end; x++) {
                 Space space = spaces[sourceY][x];
                 if (space != null) {
                     roomCount += space instanceof Room ? 1 : 0;

@@ -1,8 +1,7 @@
 package net.sachau.solitude.item;
 
 import net.sachau.solitude.engine.GameEngine;
-import net.sachau.solitude.gui.Icons;
-import net.sachau.solitude.text.Symbol;
+import net.sachau.solitude.view.Icons;
 
 public abstract class Weapon extends Item {
 

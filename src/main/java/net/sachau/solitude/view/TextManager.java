@@ -1,6 +1,5 @@
-package net.sachau.solitude.gui;
+package net.sachau.solitude.view;
 
-import net.sachau.solitude.engine.Autowired;
 import net.sachau.solitude.engine.View;
 import net.sachau.solitude.text.TextNode;
 import net.sachau.solitude.text.TextParser;

@@ -1,24 +1,13 @@
-package net.sachau.solitude.gui;
+package net.sachau.solitude.view.space;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.TransferMode;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
-import net.sachau.solitude.ComponentManager;
-import net.sachau.solitude.asset.Asset;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.model.Door;
-import net.sachau.solitude.model.Room;
-import net.sachau.solitude.model.Space;
 import net.sachau.solitude.text.TextNode;
-
-import java.util.Set;
+import net.sachau.solitude.view.MissionMapView;
 
 public class DoorView extends VBox {
 

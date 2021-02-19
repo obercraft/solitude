@@ -1,4 +1,4 @@
-package net.sachau.solitude.gui;
+package net.sachau.solitude.view.space;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Tooltip;
@@ -9,6 +9,7 @@ import javafx.scene.text.TextFlow;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.model.Room;
 import net.sachau.solitude.asset.Asset;
+import net.sachau.solitude.view.Icons;
 
 public class AssetNode extends StackPane {
 

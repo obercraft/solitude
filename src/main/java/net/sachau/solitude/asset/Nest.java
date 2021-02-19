@@ -3,7 +3,7 @@ package net.sachau.solitude.asset;
 import net.sachau.solitude.Messages;
 import net.sachau.solitude.enemy.Enemy;
 import net.sachau.solitude.engine.GameEngine;
-import net.sachau.solitude.gui.Icons;
+import net.sachau.solitude.view.Icons;
 
 public class Nest extends Asset {
 

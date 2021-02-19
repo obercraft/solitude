@@ -1,4 +1,4 @@
-package net.sachau.solitude.gui;
+package net.sachau.solitude.view.space;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -9,11 +9,12 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextFlow;
-import net.sachau.solitude.ComponentManager;
 import net.sachau.solitude.asset.Asset;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.model.*;
 import net.sachau.solitude.text.TextNode;
+import net.sachau.solitude.view.MissionMapView;
+import net.sachau.solitude.view.counter.PlayerView;
 
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class RoomView extends VBox {
         this.getStyleClass()
                 .add("steel");
         scrollArea.getStyleClass()
-                .add("steel");
+                .addAll("steel", "room");
 
         if (!this.room.isBlank()) {
             this.getStyleClass()
@@ -48,7 +49,7 @@ public class RoomView extends VBox {
         label.setMinHeight(20);
         label.setMaxHeight(20);
         content.getStyleClass()
-                .add("steel");
+                .add("room");
 
         int height = MissionMapView.roomHeight;
         int width = MissionMapView.roomWidth;
@@ -131,6 +132,10 @@ public class RoomView extends VBox {
                 .write();
         label.getChildren()
                 .addAll(newText.getChildren());
+
+        if (room.getEventCard() != null) {
+            // addContent();
+        }
     }
 
     public void addContent(Node node) {

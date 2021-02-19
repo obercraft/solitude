@@ -1,52 +1,36 @@
-package net.sachau.solitude.gui;
+package net.sachau.solitude.view.counter;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import net.sachau.solitude.engine.Autowired;
 import net.sachau.solitude.engine.GameEngine;
 import net.sachau.solitude.engine.View;
+import net.sachau.solitude.model.Counter;
 import net.sachau.solitude.model.Player;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @View
-public class PlayerView extends VBox {
+public class PlayerView extends CounterView {
 
     public static final DataFormat playerDataFormat = new DataFormat("player");
 
     private static final int size = 60;
 
     private final GameEngine gameEngine;
-    Text label = new Text();
-    StringProperty value = new SimpleStringProperty();
+
+    private Player player;
 
     @Autowired
     public PlayerView(GameEngine gameEngine) {
-        super();
+        super(gameEngine.getPlayer());
+        this.player = gameEngine.getPlayer();
         this.gameEngine = gameEngine;
-        this.setHeight(size);
-        this.setWidth(size);
-        this.setMinSize(size, size);
-        this.setMaxSize(size,size);
 
-        label.textProperty().bind(value);
-        ImageView imageView = new ImageView(Icons.get(Icons.Name.PLAYER));
-        imageView.setFitWidth(size);
-        imageView.setFitHeight(size);
-        getChildren().add(imageView);
-
-        update();
 
         this.setOnMouseClicked(event -> {
             event.consume();
@@ -65,11 +49,13 @@ public class PlayerView extends VBox {
 
     }
 
-    public void update() {
-        Player player = gameEngine.getPlayer();
-        if (player == null) {
+    @Override
+    public void update(Counter counter) {
+        if (counter == null) {
             return;
         }
-        value.set(player.getActions() +"@" +player.getTurn());
+        this.player = (Player) counter;
+        counterPanel.setText(player.getStatString());
+
     }
 }

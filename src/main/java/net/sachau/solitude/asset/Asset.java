@@ -1,7 +1,7 @@
 package net.sachau.solitude.asset;
 
 import net.sachau.solitude.engine.GameEngine;
-import net.sachau.solitude.gui.Icons;
+import net.sachau.solitude.view.Icons;
 import net.sachau.solitude.model.Space;
 
 public abstract class Asset {

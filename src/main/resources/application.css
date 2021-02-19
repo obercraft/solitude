@@ -19,3 +19,30 @@
 .border {
     -fx-border-color: #FFFFFF;
 }
+
+.counter-panel {
+    -fx-alignment: bottom-left;
+    -fx-background-color: #000000;
+
+}
+.counter-panel-background {
+    -fx-background-color: #000000;
+    -fx-padding: -2 3 0 3;
+}
+
+.counter-text {
+    -fx-font-weight: bold;
+    -fx-fill: #FFFFFF;
+
+}
+
+
+.room {
+    -fx-background-image: url(./icons/PNG/scifi-floor-15-4e.png);
+    /* -fx-background-size: cover; */
+    /* -fx-background-color: #43464B; */
+    -fx-background-color: #BBBBBB;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-position: left top;
+    -fx-background-repeat: repeat;
+}

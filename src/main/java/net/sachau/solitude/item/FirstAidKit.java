@@ -2,7 +2,7 @@ package net.sachau.solitude.item;
 
 import net.sachau.solitude.Messages;
 import net.sachau.solitude.engine.GameEngine;
-import net.sachau.solitude.gui.Icons;
+import net.sachau.solitude.view.Icons;
 import net.sachau.solitude.model.Player;
 
 public class FirstAidKit extends Item {

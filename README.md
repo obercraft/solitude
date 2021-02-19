@@ -15,3 +15,7 @@
 * First Aid by Icon Solid from the Noun Project
 * armor by Igor Esaulov from the Noun Project
 * alien by rayhan maulana rikzan from the Noun Project
+
+* Alien bug icon by Delapouite from game-icons.net
+* Uncertainty icon by Lorc from game-icons.net
+* Lockers iconby Delapouite  from game-icons.net

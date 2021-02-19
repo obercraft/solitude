@@ -1,4 +1,4 @@
-package net.sachau.solitude.gui;
+package net.sachau.solitude.view;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;

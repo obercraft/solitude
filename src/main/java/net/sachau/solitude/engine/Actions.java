@@ -11,12 +11,10 @@ import net.sachau.solitude.model.*;
 
 public class Actions {
 
-    private final Events events;
     private final GameEngine gameEngine;
 
     @Autowired
-    public Actions(GameEngine gameEngine, Events events) {
-        this.events = events;
+    public Actions(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
     }
 
@@ -85,10 +83,8 @@ public class Actions {
             return;
         }
         Weapon weapon;
-        if (player.getRight() != null && player.getRight() instanceof Weapon) {
-            weapon =(Weapon) player.getRight();
-        } else if (player.getLeft() != null && player.getLeft() instanceof Weapon) {
-            weapon =(Weapon) player.getLeft();
+        if (player.getHands() != null && player.getHands() instanceof Weapon) {
+            weapon =(Weapon) player.getHands();
         } else {
             weapon = player.getDefaultWeapon();
         }
@@ -126,7 +122,7 @@ public class Actions {
 
         if (result <= 0) {
             gameEngine.sendError("missed");
-            events.send(new EventContainer(Event.PLAYER_ATTACK_DONE, enemy));
+            gameEngine.send(Event.PLAYER_ATTACK_DONE, enemy);
             return;
         }
 
@@ -138,7 +134,7 @@ public class Actions {
         int remainingHits = Math.max(0, enemy.getHits() - weapon.getDamage());
         enemy.setHits(remainingHits);
 
-        events.send(new EventContainer(Event.PLAYER_ATTACK_DONE, enemy));
+        gameEngine.send(Event.PLAYER_ATTACK_DONE, enemy);
 
     }
 
@@ -158,10 +154,41 @@ public class Actions {
 
     }
 
+    public void openDoor(Door targetDoor) {
+        if (targetDoor == null) {
+            gameEngine.sendError("there is no door");
+            return;
+        }
+        Player player = gameEngine.getPlayer();
+        if (!player.hasActions(ActionType.USE)) {
+            gameEngine.sendError("no action left");
+            return;
+        }
+        Distance distance = gameEngine.getMissionMap().calculateDistance(player.getY(), player.getX(), targetDoor.getY(), targetDoor.getX());
+        if (distance.getRooms() > 0) {
+            gameEngine.sendError("too far away");
+            return;
+        } else if (distance.isDiagonal()) {
+            gameEngine.sendError("diagonal not allowed");
+            return;
+        }
+        if (targetDoor.isLocked()) {
+            gameEngine.sendError("door is locked");
+            return;
+        } else if (!targetDoor.isClosed()) {
+            gameEngine.sendError("door is already open");
+            return;
+        } else {
+            player.useAction(ActionType.USE);
+            targetDoor.setClosed(false);
+            gameEngine.send(Event.PLAYER_OPEN_DOOR_DONE, targetDoor);
+        }
+
+    }
 
     void enemyAttacksPlayer(Enemy enemy) {
         Player player = gameEngine.getPlayer();
-        int attackSkill = 1 + enemy.getAttack();
+        int attackSkill = enemy.getAttack();
         int result = gameEngine.getMission().drawResult(attackSkill);
         if (result > 0) {
             int damage = enemy.getDamage();

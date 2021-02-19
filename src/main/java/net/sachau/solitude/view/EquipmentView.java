@@ -1,4 +1,4 @@
-package net.sachau.solitude.gui;
+package net.sachau.solitude.view;
 
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -41,17 +41,18 @@ public class EquipmentView extends VBox implements Observer {
         }
         equipped.getChildren().clear();
             equipped.getChildren()
-                    .add(new ItemView(gameEngine, Item.Location.HAND, Item.Position.LEFT_HAND, player.getLeft()));
+                    .add(new ItemView(gameEngine, Item.Location.HANDS, player.getHands()));
 
-            equipped.getChildren().add(new ItemView(gameEngine, Item.Location.BODY, Item.Position.BODY, player.getBody()));
+            equipped.getChildren().add(new ItemView(gameEngine, Item.Location.BODY, player.getBody()));
 
-            equipped.getChildren()
-                    .add(new ItemView(gameEngine, Item.Location.HAND, Item.Position.RIGHT_HAND, player.getRight()));
+
+        equipped.getChildren()
+                .add(new ItemView(gameEngine, Item.Location.FEET, player.getFeet()));
 
 
         stash.getChildren().clear();
         for (Item item : gameEngine.getPlayer().getStash()) {
-            stash.getChildren().add(new ItemView(gameEngine, Item.Location.STASH, null, item));
+            stash.getChildren().add(new ItemView(gameEngine, Item.Location.STASH, item));
         }
         skills.getChildren().clear();
         for (Attribute attribute : Attribute.values()) {

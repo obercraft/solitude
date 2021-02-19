@@ -34,7 +34,7 @@ public class GameEngine implements Observer {
     @Autowired
     public GameEngine(Events events) {
         this.events = events;
-        this.actions = new Actions(this, events);
+        this.actions = new Actions(this);
         this.addObserver(this);
     }
 
@@ -156,34 +156,7 @@ public class GameEngine implements Observer {
 
 
     public void openDoor(Door targetDoor) {
-        if (targetDoor == null) {
-            sendError("there is no door");
-            return;
-        }
-        Player player = getPlayer();
-        if (!player.hasActions(ActionType.USE)) {
-            sendError("no action left");
-            return;
-        }
-        Distance distance = getMissionMap().calculateDistance(player.getY(), player.getX(), targetDoor.getY(), targetDoor.getX());
-        if (distance.getRooms() > 1) {
-            sendError("too far away");
-            return;
-        } else if (distance.isDiagonal()) {
-            sendError("diagonal not allowed");
-            return;
-        }
-        if (targetDoor.isLocked()) {
-            sendError("door is locked");
-            return;
-        } else if (!targetDoor.isClosed()) {
-            sendError("door is already open");
-            return;
-        } else {
-            player.useAction(ActionType.USE);
-            targetDoor.setClosed(false);
-            send(Event.PLAYER_OPEN_DOOR_DONE, targetDoor);
-        }
+        actions.openDoor(targetDoor);
     }
 
     public void use(Room room, Asset asset) {
@@ -313,13 +286,13 @@ public class GameEngine implements Observer {
     public void handleFire() {
     }
 
-    public void moveItem(Item sourceItem, Item targetItem, Item.Position position) {
+    public void moveItem(Item sourceItem, Item targetItem, Item.Location location) {
         if (sourceItem == null) {
             return;
         } else if (sourceItem.equals(targetItem)) {
             return;
         }
-        switch(position) {
+        switch(location) {
             case BODY: {
                 getPlayer().setBody(sourceItem);
                 if (sourceItem instanceof Wieldable) {
@@ -335,8 +308,8 @@ public class GameEngine implements Observer {
                 send(Event.UPDATE_EQUIPMENT);
                 return;
             }
-            case RIGHT_HAND: {
-                getPlayer().setRight(sourceItem);
+            case HANDS: {
+                getPlayer().setHands(sourceItem);
                 if (sourceItem instanceof Wieldable) {
                     ((Wieldable) sourceItem).wield(this);
                 }
@@ -346,16 +319,13 @@ public class GameEngine implements Observer {
                         ((Wieldable) targetItem).unwield(this);
                     }
 
-                }
-                if (sourceItem.equals(getPlayer().getLeft())) {
-                    getPlayer().setLeft(null);
                 }
                 getPlayer().getStash().remove(sourceItem);
                 send(Event.UPDATE_EQUIPMENT);
                 return;
             }
-            case LEFT_HAND: {
-                getPlayer().setLeft(sourceItem);
+            case FEET: {
+                getPlayer().setFeet(sourceItem);
                 if (sourceItem instanceof Wieldable) {
                     ((Wieldable) sourceItem).wield(this);
                 }
@@ -365,9 +335,6 @@ public class GameEngine implements Observer {
                         ((Wieldable) targetItem).unwield(this);
                     }
 
-                }
-                if (sourceItem.equals(getPlayer().getRight())) {
-                    getPlayer().setRight(null);
                 }
                 getPlayer().getStash().remove(sourceItem);
                 send(Event.UPDATE_EQUIPMENT);
